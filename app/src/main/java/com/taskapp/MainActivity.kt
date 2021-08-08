@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.google.firebase.FirebaseApp
 import com.taskapp.databinding.ActivityMainBinding
 import com.taskapp.presentation.RegisterUser
 
@@ -15,7 +16,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         binding.registerTextView.setOnClickListener(this)
-
         setContentView(binding.root)
     }
 
