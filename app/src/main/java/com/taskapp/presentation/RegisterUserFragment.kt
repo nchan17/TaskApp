@@ -1,43 +1,51 @@
 package com.taskapp.presentation
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.taskapp.R
 import com.taskapp.core.domain.User
-import com.taskapp.databinding.ActivityRegisterUserBinding
-
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.taskapp.databinding.FragmentRegisterUserBinding
 
 
-class RegisterUserActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var binding: ActivityRegisterUserBinding
+class RegisterUserFragment : Fragment(), View.OnClickListener {
+    private var _binding: FragmentRegisterUserBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var mAuth: FirebaseAuth
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityRegisterUserBinding.inflate(layoutInflater)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentRegisterUserBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.bannerTextView.setOnClickListener(this)
         binding.registerButton.setOnClickListener(this)
 
         mAuth = FirebaseAuth.getInstance()
-
-        setContentView(binding.root)
     }
 
     override fun onClick(v: View?) {
         if (v != null) {
             when (v.id) {
-                R.id.banner_textView -> {
-                    startActivity(Intent(this, MainActivity::class.java))
-                }
+//                R.id.banner_textView -> {
+//                    startActivity(Intent(this, MainActivity::class.java))
+//                }
                 R.id.register_button -> {
                     registerUser()
                 }
@@ -100,16 +108,16 @@ class RegisterUserActivity : AppCompatActivity(), View.OnClickListener {
                     }
                 ref?.set(user)?.addOnCompleteListener {
                     if (it.isSuccessful) {
-                        Toast.makeText(this, "user was created", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "user was created", Toast.LENGTH_SHORT).show()
                         binding.progressBar.visibility = GONE
                     } else {
-                        Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
                         binding.progressBar.visibility = GONE
                     }
                 }
 
             } else {
-                Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
                 binding.progressBar.visibility = GONE
             }
         }

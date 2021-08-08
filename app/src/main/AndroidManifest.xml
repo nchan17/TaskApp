@@ -10,15 +10,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TaskApp">
-        <activity
-            android:name=".presentation.PasswordRecoveryActivity"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.HomePageActivity"
-            android:exported="true" />
-        <activity
-            android:name=".presentation.RegisterUserActivity"
-            android:exported="true" />
         <activity android:name=".presentation.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

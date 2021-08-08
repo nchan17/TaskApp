@@ -1,30 +1,37 @@
 package com.taskapp.presentation
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
-import com.taskapp.R
-import com.taskapp.databinding.ActivityMainBinding
-import com.taskapp.databinding.ActivityPasswordRecoveryBinding
+import com.taskapp.databinding.FragmentPasswordRecoveryBinding
 
-class PasswordRecoveryActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityPasswordRecoveryBinding
+class PasswordRecoveryFragment : Fragment() {
+    private var _binding: FragmentPasswordRecoveryBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var mAuth: FirebaseAuth
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityPasswordRecoveryBinding.inflate(layoutInflater)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentPasswordRecoveryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         mAuth = FirebaseAuth.getInstance()
         binding.resetButton.setOnClickListener {
             resetPassword()
         }
-
-        setContentView(binding.root)
     }
 
     private fun resetPassword() {
@@ -42,10 +49,16 @@ class PasswordRecoveryActivity : AppCompatActivity() {
         binding.progressBar.visibility = View.VISIBLE
         mAuth.sendPasswordResetEmail(email).addOnCompleteListener {
             if (it.isSuccessful) {
-                Toast.makeText(this, "Check your email to reset your password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Check your email to reset your password",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
                 binding.progressBar.visibility = View.GONE
             } else {
-                Toast.makeText(this, "Try again, something went wrong!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Try again, something went wrong!", Toast.LENGTH_SHORT)
+                    .show()
                 binding.progressBar.visibility = View.GONE
             }
         }
