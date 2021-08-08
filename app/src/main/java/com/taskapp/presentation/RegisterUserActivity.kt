@@ -8,8 +8,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
-import com.google.firebase.FirebaseApp
-import com.taskapp.MainActivity
 import com.taskapp.R
 import com.taskapp.core.domain.User
 import com.taskapp.databinding.ActivityRegisterUserBinding
@@ -18,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 
-class RegisterUser : AppCompatActivity(), View.OnClickListener {
+class RegisterUserActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityRegisterUserBinding
     private lateinit var mAuth: FirebaseAuth
 
@@ -54,12 +52,12 @@ class RegisterUser : AppCompatActivity(), View.OnClickListener {
         val fullName = binding.fullNameEditText.text.toString().trim()
 
 
-        if (fullName.isNullOrEmpty()) {
+        if (fullName.isEmpty()) {
             binding.fullNameEditText.error = "Full name is required"
             binding.fullNameEditText.requestFocus()
             return
         }
-        if (phone.isNullOrEmpty()) {
+        if (phone.isEmpty()) {
             binding.phoneNumberEditText.error = "Phone number is required"
             binding.phoneNumberEditText.requestFocus()
             return
@@ -69,7 +67,7 @@ class RegisterUser : AppCompatActivity(), View.OnClickListener {
             binding.phoneNumberEditText.requestFocus()
             return
         }
-        if (email.isNullOrEmpty()) {
+        if (email.isEmpty()) {
             binding.emailEditText.error = "Email is required"
             binding.emailEditText.requestFocus()
             return
@@ -79,7 +77,7 @@ class RegisterUser : AppCompatActivity(), View.OnClickListener {
             binding.emailEditText.requestFocus()
             return
         }
-        if (password.isNullOrEmpty()) {
+        if (password.isEmpty()) {
             binding.passwordEditText.error = "Password is required"
             binding.passwordEditText.requestFocus()
             return

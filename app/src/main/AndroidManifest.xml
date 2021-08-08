@@ -3,17 +3,23 @@
     package="com.taskapp">
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".MyApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TaskApp">
         <activity
-            android:name=".presentation.RegisterUser"
+            android:name=".presentation.PasswordRecoveryActivity"
             android:exported="true" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".presentation.HomePageActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.RegisterUserActivity"
+            android:exported="true" />
+        <activity android:name=".presentation.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
