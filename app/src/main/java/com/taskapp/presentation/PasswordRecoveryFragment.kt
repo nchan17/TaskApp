@@ -35,14 +35,14 @@ class PasswordRecoveryFragment : Fragment() {
     }
 
     private fun resetPassword() {
-        val email = binding.emailEditText.text.toString().trim()
+        val email = binding.emailEditText.editText?.text.toString().trim()
         if (email.isEmpty()) {
-            binding.emailEditText.error = "Email is required"
+            binding.emailEditText.editText?.error = "Email is required"
             binding.emailEditText.requestFocus()
             return
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.emailEditText.error = "Please provide valid email"
+            binding.emailEditText.editText?.error = "Please provide valid email"
             binding.emailEditText.requestFocus()
             return
         }

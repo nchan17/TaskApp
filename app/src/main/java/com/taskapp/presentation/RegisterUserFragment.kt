@@ -54,44 +54,44 @@ class RegisterUserFragment : Fragment(), View.OnClickListener {
     }
 
     private fun registerUser() {
-        val email = binding.emailEditText.text.toString().trim()
-        val password = binding.passwordEditText.text.toString().trim()
-        val phone = binding.phoneNumberEditText.text.toString().trim()
-        val fullName = binding.fullNameEditText.text.toString().trim()
+        val email = binding.emailEditText.editText?.text.toString().trim()
+        val password = binding.passwordEditText.editText?.text.toString().trim()
+        val phone = binding.phoneNumberEditText.editText?.text.toString().trim()
+        val fullName = binding.fullNameEditText.editText?.text.toString().trim()
 
 
         if (fullName.isEmpty()) {
-            binding.fullNameEditText.error = "Full name is required"
+            binding.fullNameEditText.editText?.error = "Full name is required"
             binding.fullNameEditText.requestFocus()
             return
         }
         if (phone.isEmpty()) {
-            binding.phoneNumberEditText.error = "Phone number is required"
+            binding.phoneNumberEditText.editText?.error = "Phone number is required"
             binding.phoneNumberEditText.requestFocus()
             return
         }
         if (!Patterns.PHONE.matcher(phone).matches()) {
-            binding.phoneNumberEditText.error = "Please provide valid phone"
+            binding.phoneNumberEditText.editText?.error = "Please provide valid phone"
             binding.phoneNumberEditText.requestFocus()
             return
         }
         if (email.isEmpty()) {
-            binding.emailEditText.error = "Email is required"
+            binding.emailEditText.editText?.error = "Email is required"
             binding.emailEditText.requestFocus()
             return
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.emailEditText.error = "Please provide valid email"
+            binding.emailEditText.editText?.error = "Please provide valid email"
             binding.emailEditText.requestFocus()
             return
         }
         if (password.isEmpty()) {
-            binding.passwordEditText.error = "Password is required"
+            binding.passwordEditText.editText?.error = "Password is required"
             binding.passwordEditText.requestFocus()
             return
         }
         if (password.length < 6) {
-            binding.passwordEditText.error = "Password should be at least 6 characters"
+            binding.passwordEditText.editText?.error = "Password should be at least 6 characters"
             binding.passwordEditText.requestFocus()
             return
         }

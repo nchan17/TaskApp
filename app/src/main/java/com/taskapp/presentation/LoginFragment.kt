@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.taskapp.databinding.FragmentLoginBinding
@@ -36,6 +37,14 @@ class LoginFragment : Fragment(), View.OnClickListener {
         binding.registerTextView.setOnClickListener(this)
         binding.logInButton.setOnClickListener(this)
         binding.forgotPasswTextView.setOnClickListener(this)
+
+//        binding.emailEditText.editText?.doOnTextChanged { _,_,_,_ ->
+//            binding.emailEditText.error = null
+//        }
+//
+//        binding.passwordEditText.editText?.doOnTextChanged { _,_,_,_ ->
+//            binding.passwordEditText.error = null
+//        }
     }
 
     override fun onClick(v: View?) {
@@ -55,26 +64,26 @@ class LoginFragment : Fragment(), View.OnClickListener {
     }
 
     private fun userLogin() {
-        val email = binding.emailEditText.text.toString().trim()
-        val password = binding.passwordEditText.text.toString().trim()
+        val email = binding.emailEditText.editText?.text.toString().trim()
+        val password = binding.passwordEditText.editText?.text.toString().trim()
 
         if (email.isEmpty()) {
-            binding.emailEditText.error = "Email is required"
+            binding.emailEditText.editText?.error = "Email is required"
             binding.emailEditText.requestFocus()
             return
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.emailEditText.error = "Please provide valid email"
+            binding.emailEditText.editText?.error = "Please provide valid email"
             binding.emailEditText.requestFocus()
             return
         }
         if (password.isEmpty()) {
-            binding.passwordEditText.error = "Password is required"
+            binding.passwordEditText.editText?.error = "Password is required"
             binding.passwordEditText.requestFocus()
             return
         }
         if (password.length < 6) {
-            binding.passwordEditText.error = "Password should be at least 6 characters"
+            binding.passwordEditText.editText?.error = "Password should be at least 6 characters"
             binding.passwordEditText.requestFocus()
             return
         }
@@ -89,6 +98,8 @@ class LoginFragment : Fragment(), View.OnClickListener {
             }
         }
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -20,8 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/full_name_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,46 +31,74 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/banner_textView" />
+        app:layout_constraintTop_toBottomOf="@+id/banner_textView"
+        app:startIconDrawable="@drawable/ic_baseline_person_24">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/phone_number_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="16dp"
         android:hint="Phone Number"
-        android:inputType="phone"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/full_name_editText" />
+        app:layout_constraintTop_toBottomOf="@+id/full_name_editText"
+        app:startIconDrawable="@drawable/ic_baseline_phone_android_24">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="16dp"
         android:hint="Email Address"
-        android:inputType="textEmailAddress"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone_number_editText" />
+        app:layout_constraintTop_toBottomOf="@+id/phone_number_editText"
+        app:startIconDrawable="@drawable/ic_baseline_email_24">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="16dp"
         android:hint="Password"
-        android:inputType="textPassword"
         android:textSize="24sp"
+        app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_editText" />
+        app:layout_constraintTop_toBottomOf="@+id/email_editText"
+        app:startIconDrawable="@drawable/ic_baseline_lock_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/register_button"
@@ -80,6 +107,7 @@
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="16dp"
         android:text="Register User"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="26sp"
         android:textStyle="bold"
