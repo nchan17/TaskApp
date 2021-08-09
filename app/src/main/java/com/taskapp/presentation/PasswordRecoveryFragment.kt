@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
+import com.taskapp.R
 import com.taskapp.databinding.FragmentPasswordRecoveryBinding
 
 class PasswordRecoveryFragment : Fragment() {
@@ -37,12 +38,12 @@ class PasswordRecoveryFragment : Fragment() {
     private fun resetPassword() {
         val email = binding.emailEditText.editText?.text.toString().trim()
         if (email.isEmpty()) {
-            binding.emailEditText.editText?.error = "Email is required"
+            binding.emailEditText.editText?.error = getString(R.string.empty_email_error)
             binding.emailEditText.requestFocus()
             return
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.emailEditText.editText?.error = "Please provide valid email"
+            binding.emailEditText.editText?.error = getString(R.string.invalid_email_error)
             binding.emailEditText.requestFocus()
             return
         }
@@ -51,13 +52,13 @@ class PasswordRecoveryFragment : Fragment() {
             if (it.isSuccessful) {
                 Toast.makeText(
                     context,
-                    "Check your email to reset your password",
+                    getString(R.string.check_email_for_password_reset_text),
                     Toast.LENGTH_SHORT
                 )
                     .show()
                 binding.progressBar.visibility = View.GONE
             } else {
-                Toast.makeText(context, "Try again, something went wrong!", Toast.LENGTH_SHORT)
+                Toast.makeText(context, getString(R.string.something_wrong_error_text), Toast.LENGTH_SHORT)
                     .show()
                 binding.progressBar.visibility = View.GONE
             }

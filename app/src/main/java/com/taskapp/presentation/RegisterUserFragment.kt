@@ -61,37 +61,39 @@ class RegisterUserFragment : Fragment(), View.OnClickListener {
 
 
         if (fullName.isEmpty()) {
-            binding.fullNameEditText.editText?.error = "Full name is required"
+            binding.fullNameEditText.editText?.error = getString(R.string.empty_full_name_error)
             binding.fullNameEditText.requestFocus()
             return
         }
         if (phone.isEmpty()) {
-            binding.phoneNumberEditText.editText?.error = "Phone number is required"
+            binding.phoneNumberEditText.editText?.error =
+                getString(R.string.empty_phone_number_error)
             binding.phoneNumberEditText.requestFocus()
             return
         }
         if (!Patterns.PHONE.matcher(phone).matches()) {
-            binding.phoneNumberEditText.editText?.error = "Please provide valid phone"
+            binding.phoneNumberEditText.editText?.error =
+                getString(R.string.invalid_phone_number_error)
             binding.phoneNumberEditText.requestFocus()
             return
         }
         if (email.isEmpty()) {
-            binding.emailEditText.editText?.error = "Email is required"
+            binding.emailEditText.editText?.error = getString(R.string.empty_email_error)
             binding.emailEditText.requestFocus()
             return
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.emailEditText.editText?.error = "Please provide valid email"
+            binding.emailEditText.editText?.error = getString(R.string.invalid_email_error)
             binding.emailEditText.requestFocus()
             return
         }
         if (password.isEmpty()) {
-            binding.passwordEditText.editText?.error = "Password is required"
+            binding.passwordEditText.editText?.error = getString(R.string.empty_password_error)
             binding.passwordEditText.requestFocus()
             return
         }
         if (password.length < 6) {
-            binding.passwordEditText.editText?.error = "Password should be at least 6 characters"
+            binding.passwordEditText.editText?.error = getString(R.string.short_password_error)
             binding.passwordEditText.requestFocus()
             return
         }
@@ -111,13 +113,13 @@ class RegisterUserFragment : Fragment(), View.OnClickListener {
                         Toast.makeText(context, "user was created", Toast.LENGTH_SHORT).show()
                         binding.progressBar.visibility = GONE
                     } else {
-                        Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, getString(R.string.general_error), Toast.LENGTH_SHORT).show()
                         binding.progressBar.visibility = GONE
                     }
                 }
 
             } else {
-                Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.general_error), Toast.LENGTH_SHORT).show()
                 binding.progressBar.visibility = GONE
             }
         }

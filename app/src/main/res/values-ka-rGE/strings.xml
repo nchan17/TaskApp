@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TaskApp</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="task_app_banner_text">Task App</string>
+    <string name="email_address_edit_text_hint">იმეილი</string>
+    <string name="password_edit_text_hint">პაროლი</string>
+    <string name="login_button_text">შესვლა</string>
+    <string name="forgot_password_button_text">დაგავიწყდათ პაროლი?</string>
+    <string name="register_button_text">რეგისტრაცია</string>
+    <string name="reset_password_button_text">პაროლის შეცვლა</string>
+    <string name="full_name_edit_text_hint">სრული სახელი</string>
+    <string name="phone_number_edit_text_hint">მობილურის ნომერი</string>
+    <string name="register_user_button_text">რეგისტრაცია</string>
+    <string name="check_email_for_password_reset_text">შეამოწმეთ იმეილი, გადადით ლინკე და შეცვალეთ პაროლი</string>
+    <string name="user_was_created_text">user was created</string>
+
+    <string name="empty_email_error">გთხოვთ შეიყვანოთ იმეილი</string>
+    <string name="invalid_email_error">გთხოვთ შეიყვანოთ ვალიდური იმეილი</string>
+    <string name="empty_password_error">გთხოვთ შეიყვანოთ პაროლი</string>
+    <string name="short_password_error">პაროლი უნდა იყოს მინიმუმ 6 სიმბოლო</string>
+    <string name="login_fail_error">შეცდომა დალოგინების დროს</string>
+    <string name="something_wrong_error_text">დაფიქსირდა შეცდომა, თავიდან სცადეთ!</string>
+    <string name="empty_full_name_error">გთხოვთ შეიყვანოთ სრული სახელი</string>
+    <string name="empty_phone_number_error">გთხოვთ შეიყვანოთ მობილურის ნომერი</string>
+    <string name="invalid_phone_number_error">გთხოვთ შეიყვანოთ ვალიდური მობილურის ნომერი</string>
+    <string name="general_error">შეცდომა</string>
+
+</resources>

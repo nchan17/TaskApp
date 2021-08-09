@@ -68,22 +68,22 @@ class LoginFragment : Fragment(), View.OnClickListener {
         val password = binding.passwordEditText.editText?.text.toString().trim()
 
         if (email.isEmpty()) {
-            binding.emailEditText.editText?.error = "Email is required"
+            binding.emailEditText.editText?.error = getString(R.string.empty_email_error)
             binding.emailEditText.requestFocus()
             return
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.emailEditText.editText?.error = "Please provide valid email"
+            binding.emailEditText.editText?.error = getString(R.string.invalid_email_error)
             binding.emailEditText.requestFocus()
             return
         }
         if (password.isEmpty()) {
-            binding.passwordEditText.editText?.error = "Password is required"
+            binding.passwordEditText.editText?.error = getString(R.string.empty_password_error)
             binding.passwordEditText.requestFocus()
             return
         }
         if (password.length < 6) {
-            binding.passwordEditText.editText?.error = "Password should be at least 6 characters"
+            binding.passwordEditText.editText?.error = getString(R.string.short_password_error)
             binding.passwordEditText.requestFocus()
             return
         }
@@ -93,7 +93,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 binding.progressBar.visibility = View.GONE
                 view?.findNavController()?.navigate(R.id.action_loginFragment_to_homePageFragment)
             } else {
-                Toast.makeText(context, "Failed to log in", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.login_fail_error), Toast.LENGTH_SHORT).show()
                 binding.progressBar.visibility = View.GONE
             }
         }
