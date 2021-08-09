@@ -1,4 +1,4 @@
-package com.taskapp.presentation
+package com.taskapp.presentation.authorization
 
 import android.app.Application
 import android.util.Patterns

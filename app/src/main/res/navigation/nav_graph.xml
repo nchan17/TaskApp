@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.taskapp.presentation.LoginFragment"
+        android:name="com.taskapp.presentation.authorization.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerUserFragment"
-        android:name="com.taskapp.presentation.RegisterUserFragment"
+        android:name="com.taskapp.presentation.authorization.RegisterUserFragment"
         android:label="RegisterUserFragment"
         tools:layout="@layout/fragment_register_user" >
     </fragment>
@@ -35,7 +35,7 @@
         tools:layout="@layout/fragment_home_page"/>
     <fragment
         android:id="@+id/passwordRecoveryFragment"
-        android:name="com.taskapp.presentation.PasswordRecoveryFragment"
+        android:name="com.taskapp.presentation.authorization.PasswordRecoveryFragment"
         android:label="fragment_password_recovery"
         tools:layout="@layout/fragment_password_recovery" />
 </navigation>
