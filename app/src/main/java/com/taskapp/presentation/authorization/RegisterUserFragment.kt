@@ -87,8 +87,7 @@ class RegisterUserFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    // returns false if invalid field found
-    // returns true if valid field
+    // returns false if invalid field was found
     private fun validateRegisterFields(
         email: String,
         password: String,

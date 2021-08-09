@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/searchPageFragment">
+
+    <fragment
+        android:id="@+id/myTasksFragment"
+        android:name="com.taskapp.presentation.mytaskspage.MyTasksFragment"
+        android:label="fragment_my_tasks"
+        tools:layout="@layout/fragment_my_tasks" />
+    <fragment
+        android:id="@+id/searchPageFragment"
+        android:name="com.taskapp.presentation.searchpage.SearchPageFragment"
+        android:label="fragment_search_page"
+        tools:layout="@layout/fragment_search_page" />
+    <fragment
+        android:id="@+id/userPageFragment2"
+        android:name="com.taskapp.presentation.userpage.UserPageFragment"
+        android:label="UserPageFragment"
+        tools:layout="@layout/fragment_user_page" />
+</navigation>

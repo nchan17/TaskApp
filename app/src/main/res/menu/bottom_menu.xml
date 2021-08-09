@@ -2,12 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/searchPageFragment"
         android:icon="@drawable/ic_baseline_search_24"
         android:title="Search" />
     <item
+        android:id="@+id/myTasksFragment"
         android:icon="@drawable/ic_baseline_check_24"
         android:title="Tasks" />
     <item
+        android:id="@+id/userPageFragment2"
         android:icon="@drawable/ic_baseline_person_24"
         android:title="Profile" />
 </menu>

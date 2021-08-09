@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.taskapp.R
 import com.taskapp.databinding.FragmentHomePageBinding
 
 class HomePageFragment : Fragment() {
@@ -26,8 +28,12 @@ class HomePageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val bottomNavigationView = binding.bottomNavigationView
-        val navController = findNavController()
+        val homeFragment =
+            childFragmentManager.findFragmentById(R.id.nav_home_fragment) as? NavHostFragment
+        val navController = homeFragment?.navController
 
-        bottomNavigationView.setupWithNavController(navController)
+        if (navController != null) {
+            bottomNavigationView.setupWithNavController(navController)
+        }
     }
 }
