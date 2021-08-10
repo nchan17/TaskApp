@@ -1,7 +1,7 @@
 package com.taskapp.core.domain
 
 data class User(
-    val fullName: String,
-    val phone: String,
-    val email: String
+    val fullName: String? = null,
+    val phone: String? = null,
+    val email: String? = null
 )

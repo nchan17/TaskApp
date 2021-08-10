@@ -33,6 +33,9 @@
         android:name="com.taskapp.presentation.HomePageFragment"
         android:label="HomePageFragment"
         tools:layout="@layout/fragment_home_page">
+        <action
+            android:id="@+id/action_homePageFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/passwordRecoveryFragment"

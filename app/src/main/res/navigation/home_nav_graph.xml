@@ -19,5 +19,11 @@
         android:id="@+id/userPageFragment2"
         android:name="com.taskapp.presentation.userpage.UserPageFragment"
         android:label="UserPageFragment"
-        tools:layout="@layout/fragment_user_page" />
+        tools:layout="@layout/fragment_user_page">
+        <action
+            android:id="@+id/action_userPageFragment2_to_loginFragment"
+            app:destination="@id/userPageFragment2"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>
