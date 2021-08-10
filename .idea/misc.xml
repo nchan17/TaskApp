@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.213768115942029" />
         <entry key="app/src/main/res/layout/activity_password_recovery.xml" value="0.29583333333333334" />
         <entry key="app/src/main/res/layout/activity_register_user.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/fragment_create_task.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_home_page.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.2722222222222222" />
         <entry key="app/src/main/res/layout/fragment_my_tasks.xml" value="0.16770833333333332" />

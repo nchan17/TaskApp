@@ -2,6 +2,19 @@
     <string name="app_name">TaskApp</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!--    Errors-->
+    <string name="empty_email_error">Email is required</string>
+    <string name="invalid_email_error">Please provide valid email</string>
+    <string name="empty_password_error">Password is required</string>
+    <string name="short_password_error">Password should be at least 6 characters</string>
+    <string name="login_fail_error">Failed to log in</string>
+    <string name="something_wrong_error_text">Try again, something went wrong!</string>
+    <string name="empty_full_name_error">Full name is required</string>
+    <string name="empty_phone_number_error">Phone number is required</string>
+    <string name="invalid_phone_number_error">Please provide valid phone</string>
+    <string name="general_error">ERROR</string>
+
+    <!--    Auth Flow-->
     <string name="task_app_banner_text">Task App</string>
     <string name="email_address_edit_text_hint">Email Address</string>
     <string name="password_edit_text_hint">Password</string>
@@ -15,15 +28,13 @@
     <string name="check_email_for_password_reset_text">Check your email to reset your password</string>
     <string name="user_was_created_text">User was created</string>
 
-    <string name="empty_email_error">Email is required</string>
-    <string name="invalid_email_error">Please provide valid email</string>
-    <string name="empty_password_error">Password is required</string>
-    <string name="short_password_error">Password should be at least 6 characters</string>
-    <string name="login_fail_error">Failed to log in</string>
-    <string name="something_wrong_error_text">Try again, something went wrong!</string>
-    <string name="empty_full_name_error">Full name is required</string>
-    <string name="empty_phone_number_error">Phone number is required</string>
-    <string name="invalid_phone_number_error">Please provide valid phone</string>
-    <string name="general_error">ERROR</string>
+    <!--    My Tasks Flow-->
+    <string name="create_task_header_text">Create Task</string>
+    <string name="create_task_title_edit_text_hint">Title</string>
+    <string name="create_task_description_edit_text_hint">Description</string>
+    <string name="create_task_price_edit_text_hint">Price</string>
+    <string name="create_task_action_button_text">Create Task</string>
+    <string name="create_task_success_text">Task was created</string>
+
 
 </resources>

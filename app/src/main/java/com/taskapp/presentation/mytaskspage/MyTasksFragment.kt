@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.firebase.auth.FirebaseAuth
+import androidx.navigation.Navigation
+import com.taskapp.R
 import com.taskapp.databinding.FragmentMyTasksBinding
 
 class MyTasksFragment : Fragment() {
     private var _binding: FragmentMyTasksBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,8 +24,10 @@ class MyTasksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        mAuth = FirebaseAuth.getInstance()
+        binding.createTaskButton.setOnClickListener {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_myTasksFragment_to_createTaskFragment)
+        }
     }
 
     override fun onDestroyView() {
