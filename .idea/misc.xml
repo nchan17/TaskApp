@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/search_task_card_drawable.xml" value="0.3055555555555556" />
+        <entry key="app/src/main/res/drawable/search_view_drawable.xml" value="0.3055555555555556" />
         <entry key="app/src/main/res/layout/activity_home_page.xml" value="0.29583333333333334" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.213768115942029" />
         <entry key="app/src/main/res/layout/activity_password_recovery.xml" value="0.29583333333333334" />
@@ -13,8 +15,9 @@
         <entry key="app/src/main/res/layout/fragment_my_tasks.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_password_recovery.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_register_user.xml" value="0.16822916666666668" />
-        <entry key="app/src/main/res/layout/fragment_search_page.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/fragment_search_page.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_user_page.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_search_task_card.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.3098958333333333" />
       </map>
     </option>
