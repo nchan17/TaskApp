@@ -9,7 +9,7 @@
         android:id="@+id/myTasksFragment"
         android:name="com.taskapp.presentation.mytaskspage.MyTasksFragment"
         android:label="fragment_my_tasks"
-        tools:layout="@layout/fragment_my_tasks" >
+        tools:layout="@layout/fragment_my_tasks">
         <action
             android:id="@+id/action_myTasksFragment_to_createTaskFragment"
             app:destination="@id/createTaskFragment" />
@@ -18,19 +18,28 @@
         android:id="@+id/searchPageFragment"
         android:name="com.taskapp.presentation.searchpage.SearchPageFragment"
         android:label="fragment_search_page"
-        tools:layout="@layout/fragment_search_page" />
+        tools:layout="@layout/fragment_search_page">
+        <action
+            android:id="@+id/action_searchPageFragment_to_taskPageFragment"
+            app:destination="@id/taskPageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/userPageFragment2"
         android:name="com.taskapp.presentation.userpage.UserPageFragment"
         android:label="UserPageFragment"
-        tools:layout="@layout/fragment_user_page"/>
+        tools:layout="@layout/fragment_user_page" />
     <fragment
         android:id="@+id/createTaskFragment"
         android:name="com.taskapp.presentation.mytaskspage.CreateTaskFragment"
         android:label="CreateTaskFragment"
-        tools:layout="@layout/fragment_create_task" >
+        tools:layout="@layout/fragment_create_task">
         <action
             android:id="@+id/action_createTaskFragment_to_myTasksFragment"
             app:destination="@id/myTasksFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/taskPageFragment"
+        android:name="com.taskapp.presentation.searchpage.TaskPageFragment"
+        android:label="TaskPageFragment"
+        tools:layout="@layout/fragment_task_page" />
 </navigation>

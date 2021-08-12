@@ -7,9 +7,11 @@ import com.taskapp.core.domain.Task
 import com.taskapp.databinding.ItemSearchTaskCardBinding
 import java.text.SimpleDateFormat
 
-class SearchTaskRecyclerAdapter(taskList: ArrayList<Task>) :
+class SearchTaskRecyclerAdapter(taskList: ArrayList<Task>, listener: SearchTaskClickInterface) :
     RecyclerView.Adapter<SearchTaskRecyclerAdapter.ViewHolder>() {
-    private var list: ArrayList<Task> = taskList
+    private var taskLs: ArrayList<Task> = taskList
+    private var listener: SearchTaskClickInterface = listener
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -24,11 +26,11 @@ class SearchTaskRecyclerAdapter(taskList: ArrayList<Task>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(
-            list[position]
+            taskLs[position]
         )
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = taskLs.size
 
     inner class ViewHolder(private var item: ItemSearchTaskCardBinding) :
         RecyclerView.ViewHolder(item.root) {
@@ -39,6 +41,13 @@ class SearchTaskRecyclerAdapter(taskList: ArrayList<Task>) :
             item.titleTextView.text = task.title
             item.descriptionTextView.text = task.description
             item.priceTextView.text = task.price.toString() + " ₾"
+            itemView.setOnClickListener {
+                listener.onItemClick(layoutPosition)
+            }
         }
+    }
+
+    interface SearchTaskClickInterface {
+        fun onItemClick(index: Int)
     }
 }
