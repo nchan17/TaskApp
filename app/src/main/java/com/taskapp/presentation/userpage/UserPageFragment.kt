@@ -14,6 +14,8 @@ import com.google.firebase.firestore.ktx.toObject
 import com.taskapp.core.domain.User
 import com.taskapp.databinding.FragmentUserPageBinding
 import android.content.Intent
+import com.bumptech.glide.Glide
+import com.taskapp.R
 
 
 class UserPageFragment : Fragment() {
@@ -49,6 +51,9 @@ class UserPageFragment : Fragment() {
         binding.logoutButton.setOnClickListener {
             logOut()
         }
+        binding.ratingBar.rating = 4.5F
+        Glide.with(this).load(R.drawable.profile_img_test).into(binding.profilePictureImageView)
+
     }
 
     private fun logOut() {

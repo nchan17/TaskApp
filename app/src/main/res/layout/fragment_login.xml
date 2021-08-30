@@ -19,6 +19,7 @@
             android:fontFamily="sans-serif-black"
             android:text="@string/task_app_banner_text"
             android:textAlignment="center"
+            android:textColor="?attr/colorPrimary"
             android:textSize="60sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
