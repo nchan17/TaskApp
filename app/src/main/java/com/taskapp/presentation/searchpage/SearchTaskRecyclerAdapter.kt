@@ -36,7 +36,12 @@ class SearchTaskRecyclerAdapter(taskList: ArrayList<Task>, listener: SearchTaskC
         RecyclerView.ViewHolder(item.root) {
         fun bind(task: Task) {
             val date =
-                SimpleDateFormat("dd-mm-yyyy").format(task.creation_data?.time) //araswor TariRebs aCvenebs
+                task.creation_data?.date.toString() + "-" + task.creation_data?.month.toString() + "-" + task.creation_data?.year?.plus(
+                    1900
+                )
+                    .toString()
+//            val date =
+//            SimpleDateFormat("dd-mm-yyyy").format(task.creation_data?.time)
             item.dateTextView.text = date
             item.titleTextView.text = task.title
             item.descriptionTextView.text = task.description

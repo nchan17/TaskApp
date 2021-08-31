@@ -52,8 +52,6 @@ class UserPageFragment : Fragment() {
             logOut()
         }
         binding.ratingBar.rating = 4.5F
-        Glide.with(this).load(R.drawable.profile_img_test).into(binding.profilePictureImageView)
-
     }
 
     private fun logOut() {
