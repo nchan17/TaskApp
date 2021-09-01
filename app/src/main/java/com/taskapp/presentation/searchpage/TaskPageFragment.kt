@@ -6,22 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.taskapp.R
-import com.taskapp.core.domain.Task
 import com.taskapp.core.domain.User
 import com.taskapp.databinding.FragmentTaskPageBinding
-import java.text.SimpleDateFormat
 
 class TaskPageFragment : Fragment() {
     private var _binding: FragmentTaskPageBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var mAuth: FirebaseAuth
-    private val viewModel: SearchPageViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,8 +31,14 @@ class TaskPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mAuth = FirebaseAuth.getInstance()
-        val employerId = viewModel.currentTask?.employer_id
-        val taskId = arguments?.getString(TASK_ID)
+
+        val employerId = arguments?.getString(TASK_EMPLOYER_ID)
+//        val taskId = arguments?.getString(TASK_ID)
+
+        val title = arguments?.getString(TASK_TITLE)
+        val desc = arguments?.getString(TASK_DESC)
+        val price = arguments?.getString(TASK_PRICE)
+        val date = arguments?.getString(TASK_CREATION_DATA)
 
         binding.progressBar.visibility = View.VISIBLE
 
@@ -60,38 +62,10 @@ class TaskPageFragment : Fragment() {
                 }
         }
 
-        if (taskId != null) {
-            val taskRef =
-                mAuth.currentUser?.let {
-                    FirebaseFirestore.getInstance().collection("tasks").document(taskId)
-                }
-            taskRef?.get()
-                ?.addOnSuccessListener { data ->
-                    if (data != null) {
-                        data.toObject<Task>()?.let {
-                            binding.titleTextView.text = viewModel.currentTask?.title
-                            binding.descriptionTextView.text = viewModel.currentTask?.description
-                            binding.priceTextView.text = viewModel.currentTask?.price.toString()
-                        }
-                    } else {
-                        showToast("error no such user")
-                    }
-                    binding.progressBar.visibility = View.GONE
-                }
-                ?.addOnFailureListener {
-                    showToast(getString(R.string.general_error))
-                    binding.progressBar.visibility = View.GONE
-                }
-        }
-
-        val taskTime = viewModel.currentTask?.creation_data?.time
-        if (taskTime != null) {
-            val date =
-                SimpleDateFormat("dd-mm-yyyy").format(taskTime)
-            binding.dateTextView.text = date
-        }
-
-
+        binding.titleTextView.text = title
+        binding.descriptionTextView.text = desc
+        binding.priceTextView.text = price
+        binding.dateTextView.text = date
     }
 
     private fun showUserData(user: User) {
@@ -109,14 +83,19 @@ class TaskPageFragment : Fragment() {
 
     companion object {
         private const val TASK_ID = "TASK_ID"
+        private const val TASK_EMPLOYER_ID = "TASK_EMPLOYER_ID"
+        private const val TASK_TITLE = "TASK_TITLE"
+        private const val TASK_DESC = "TASK_DESC"
+        private const val TASK_PRICE = "TASK_PRICE"
+        private const val TASK_CREATION_DATA = "TASK_CREATION_DATA"
 
-        fun newInstance(taskId: String): TaskPageFragment {
-            val myFragment = TaskPageFragment()
-            val args = Bundle()
-            args.putString(TASK_ID, taskId)
-            myFragment.arguments = args
-            return myFragment
-        }
+//        fun newInstance(taskId: String): TaskPageFragment {
+//            val myFragment = TaskPageFragment()
+//            val args = Bundle()
+//            args.putString(TASK_ID, taskId)
+//            myFragment.arguments = args
+//            return myFragment
+//        }
     }
 
 }

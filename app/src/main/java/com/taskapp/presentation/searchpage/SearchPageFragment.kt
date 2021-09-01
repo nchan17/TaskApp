@@ -21,8 +21,6 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
     private var _binding: FragmentSearchPageBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: SearchPageViewModel by viewModels()
-
     private lateinit var mAuth: FirebaseAuth
     private lateinit var adapter: SearchTaskRecyclerAdapter
     private var tasks: ArrayList<Task> = arrayListOf<Task>()
@@ -53,6 +51,8 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
             }
         ref?.get()
             ?.addOnSuccessListener { documents ->
+                taskLsId.clear()
+                tasks.clear()
                 for (document in documents) {
                     taskLsId.add(document.id)
                     tasks.add(document.toObject<Task>())
@@ -87,17 +87,30 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
     }
 
     override fun onItemClick(index: Int) {
-        viewModel.currentTask = tasks[index]
-        viewModel.currentTaskId = taskLsId[index]
+        val bundle = Bundle()
+        bundle.putString(TASK_ID, taskLsId[index])
+        bundle.putString(TASK_EMPLOYER_ID, tasks[index].employer_id)
+        bundle.putString(TASK_TITLE, tasks[index].title)
+        bundle.putString(TASK_DESC, tasks[index].description)
+        bundle.putString(TASK_PRICE, tasks[index].price.toString() + " ₾")
 
-//        val bundle = Bundle()
-//        bundle.putString(TASK_ID, taskLsId[index])
-//        val navController = view?.findNavController()
-//        navController?.setGraph(R.navigation.home_nav_graph, bundle)
-//        navController?.navigate(R.id.action_searchPageFragment_to_taskPageFragment)
+        val date =
+            tasks[index].creation_data?.date.toString() + "-" + tasks[index].creation_data?.month.toString() + "-" + tasks[index].creation_data?.year?.plus(
+                1900
+            )
+                .toString()
+        bundle.putString(TASK_CREATION_DATA, date)
+
+        view?.findNavController()
+            ?.navigate(R.id.action_searchPageFragment_to_taskPageFragment, bundle)
     }
 
     companion object {
         private const val TASK_ID = "TASK_ID"
+        private const val TASK_EMPLOYER_ID = "TASK_EMPLOYER_ID"
+        private const val TASK_TITLE = "TASK_TITLE"
+        private const val TASK_DESC = "TASK_DESC"
+        private const val TASK_PRICE = "TASK_PRICE"
+        private const val TASK_CREATION_DATA = "TASK_CREATION_DATA"
     }
 }
