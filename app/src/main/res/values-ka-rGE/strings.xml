@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TaskIt</string>
+    <string name="app_name">Taskit</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--    Errors-->
@@ -16,7 +16,7 @@
     <string name="general_error">ERROR</string>
 
     <!--    Auth Flow-->
-    <string name="task_app_banner_text">TaskIt</string>
+    <string name="task_app_banner_text">Taskit</string>
     <string name="email_address_edit_text_hint">იმეილი</string>
     <string name="password_edit_text_hint">პაროლი</string>
     <string name="login_button_text">შესვლა</string>
