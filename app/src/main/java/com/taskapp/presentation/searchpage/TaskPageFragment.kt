@@ -38,7 +38,6 @@ class TaskPageFragment : Fragment() {
 
         val employerId = arguments?.getString(TASK_EMPLOYER_ID)
 //        val taskId = arguments?.getString(TASK_ID)
-
         val title = arguments?.getString(TASK_TITLE)
         val desc = arguments?.getString(TASK_DESC)
         val price = arguments?.getString(TASK_PRICE)
