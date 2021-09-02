@@ -10,7 +10,7 @@ import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.taskapp.R
-import com.taskapp.core.domain.Task
+import com.taskapp.domain.Task
 import com.taskapp.databinding.FragmentCreateTaskBinding
 import java.util.*
 

@@ -1,4 +1,4 @@
-package com.taskapp.core.domain
+package com.taskapp.domain
 
 data class User(
     val fullName: String? = null,

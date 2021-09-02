@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.taskapp.R
-import com.taskapp.core.domain.Task
+import com.taskapp.domain.Task
 import com.taskapp.databinding.FragmentSearchPageBinding
 
 class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClickInterface {
@@ -47,7 +47,7 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
         val ref =
             mAuth.currentUser?.let {
                 FirebaseFirestore.getInstance().collection("tasks")
-//                    .whereEqualTo("employer_id", it.uid)
+                    .whereNotEqualTo("employer_id", it.uid)
             }
         ref?.get()
             ?.addOnSuccessListener { documents ->
@@ -87,30 +87,22 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
     }
 
     override fun onItemClick(index: Int) {
-        val bundle = Bundle()
-        bundle.putString(TASK_ID, taskLsId[index])
-        bundle.putString(TASK_EMPLOYER_ID, tasks[index].employer_id)
-        bundle.putString(TASK_TITLE, tasks[index].title)
-        bundle.putString(TASK_DESC, tasks[index].description)
-        bundle.putString(TASK_PRICE, tasks[index].price.toString() + " ₾")
-
         val date =
             tasks[index].creation_data?.date.toString() + "-" + tasks[index].creation_data?.month.toString() + "-" + tasks[index].creation_data?.year?.plus(
                 1900
             )
                 .toString()
-        bundle.putString(TASK_CREATION_DATA, date)
+        val bundle = TaskPageFragment.newBundleInstance(
+            taskLsId[index],
+            tasks[index].employer_id,
+            tasks[index].title,
+            tasks[index].description,
+            tasks[index].price.toString() + " ₾",
+            date
+        )
 
         view?.findNavController()
             ?.navigate(R.id.action_searchPageFragment_to_taskPageFragment, bundle)
     }
 
-    companion object {
-        private const val TASK_ID = "TASK_ID"
-        private const val TASK_EMPLOYER_ID = "TASK_EMPLOYER_ID"
-        private const val TASK_TITLE = "TASK_TITLE"
-        private const val TASK_DESC = "TASK_DESC"
-        private const val TASK_PRICE = "TASK_PRICE"
-        private const val TASK_CREATION_DATA = "TASK_CREATION_DATA"
-    }
 }

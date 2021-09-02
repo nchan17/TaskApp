@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.taskapp.R
-import com.taskapp.core.domain.User
+import com.taskapp.domain.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.taskapp.databinding.FragmentRegisterUserBinding

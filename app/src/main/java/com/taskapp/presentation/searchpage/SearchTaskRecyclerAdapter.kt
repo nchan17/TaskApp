@@ -3,7 +3,7 @@ package com.taskapp.presentation.searchpage
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.taskapp.core.domain.Task
+import com.taskapp.domain.Task
 import com.taskapp.databinding.ItemSearchTaskCardBinding
 import java.text.SimpleDateFormat
 

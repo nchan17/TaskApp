@@ -1,5 +1,6 @@
 package com.taskapp.presentation.searchpage
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +10,16 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.storage.FirebaseStorage
 import com.taskapp.R
-import com.taskapp.core.domain.User
+import com.taskapp.domain.User
 import com.taskapp.databinding.FragmentTaskPageBinding
+import java.io.File
 
 class TaskPageFragment : Fragment() {
     private var _binding: FragmentTaskPageBinding? = null
     private val binding get() = _binding!!
+    private var storage: FirebaseStorage = FirebaseStorage.getInstance()
 
     private lateinit var mAuth: FirebaseAuth
 
@@ -66,6 +70,19 @@ class TaskPageFragment : Fragment() {
         binding.descriptionTextView.text = desc
         binding.priceTextView.text = price
         binding.dateTextView.text = date
+        getProfilePhoto(employerId)
+    }
+
+    private fun getProfilePhoto(employerId: String?) {
+        if (employerId == null) return
+        val localFile: File = File.createTempFile("profile", "jpeg")
+
+        val storageRef = storage.reference.child(employerId)
+        storageRef.getFile(localFile)
+            .addOnSuccessListener {
+                val bitMap = BitmapFactory.decodeFile(localFile.absolutePath)
+                binding.profilePictureImageView.setImageBitmap(bitMap)
+            }
     }
 
     private fun showUserData(user: User) {
@@ -89,13 +106,23 @@ class TaskPageFragment : Fragment() {
         private const val TASK_PRICE = "TASK_PRICE"
         private const val TASK_CREATION_DATA = "TASK_CREATION_DATA"
 
-//        fun newInstance(taskId: String): TaskPageFragment {
-//            val myFragment = TaskPageFragment()
-//            val args = Bundle()
-//            args.putString(TASK_ID, taskId)
-//            myFragment.arguments = args
-//            return myFragment
-//        }
+        fun newBundleInstance(
+            taskId: String,
+            employer_id: String?,
+            title: String?,
+            desc: String?,
+            price: String,
+            creation_data: String
+        ): Bundle {
+            val bundle = Bundle()
+            bundle.putString(TASK_ID, taskId)
+            bundle.putString(TASK_EMPLOYER_ID, employer_id)
+            bundle.putString(TASK_TITLE, title)
+            bundle.putString(TASK_DESC, desc)
+            bundle.putString(TASK_PRICE, price)
+            bundle.putString(TASK_CREATION_DATA, creation_data)
+            return bundle
+        }
     }
 
 }
