@@ -70,7 +70,11 @@ class UserPageFragment : Fragment() {
     private fun addObservers() {
         viewModel.getUserDataDone.observe(viewLifecycleOwner, { result ->
             if (result) {
-                binding.profilePictureImageView.setImageBitmap(viewModel.profilePicLiveData.value)
+                viewModel.profilePicLiveData.value?.let {
+                    binding.profilePictureImageView.setImageBitmap(
+                        it
+                    )
+                }
                 val data = viewModel.userLiveData.value
                 if (data != null) {
                     showUserData(data)

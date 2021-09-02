@@ -42,14 +42,17 @@ class UserPageViewModel(app: Application) : AndroidViewModel(app) {
             .document(userId)
             .get()
 
-        Tasks.whenAll(taskGetUserTask, profilePicTask)
-            .addOnSuccessListener {
+        Tasks.whenAll(taskGetUserTask, profilePicTask).addOnCompleteListener {
+            if (profilePicTask.isSuccessful) {
                 profilePicLiveData.postValue(BitmapFactory.decodeFile(localFile.absolutePath))
+            }
+            if (taskGetUserTask.isSuccessful) {
                 userLiveData.postValue(taskGetUserTask.result?.toObject<User>())
                 getUserDataDone.postValue(true)
-            }.addOnFailureListener {
+            } else {
                 getUserDataDone.postValue(false)
             }
+        }
     }
 
     fun uploadImageToFirebase(imageUri: Uri?, userId: String) {
