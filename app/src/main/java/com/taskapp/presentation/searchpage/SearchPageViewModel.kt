@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
+import com.taskapp.domain.TaskOffer
 import com.taskapp.domain.User
 import java.io.File
 
@@ -22,7 +23,15 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
         MutableLiveData<Bitmap>()
     }
 
-    val getUserDataDone: MutableLiveData<Boolean> by lazy {
+    val getUserDataIsSuccessful: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
+    val sendOfferIsSuccessful: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
+    val offerAlreadySent: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
 
@@ -43,11 +52,41 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
             }
             if (taskGetUserTask.isSuccessful) {
                 userLiveData.postValue(taskGetUserTask.result?.toObject<User>())
-                getUserDataDone.postValue(true)
+                getUserDataIsSuccessful.postValue(true)
             } else {
-                getUserDataDone.postValue(false)
+                getUserDataIsSuccessful.postValue(false)
             }
         }
+    }
+
+    fun sendOffer(userId: String, taskId: String) {
+        val taskOffer = TaskOffer(userId, taskId)
+        val ref =
+            FirebaseFirestore.getInstance().collection("task_offers").document()
+        ref.set(taskOffer).addOnCompleteListener {
+            if (it.isSuccessful) {
+                sendOfferIsSuccessful.postValue(true)
+            } else {
+                sendOfferIsSuccessful.postValue(false)
+            }
+        }
+    }
+
+    fun checkIfOfferAlreadySent(userId: String, taskId: String) {
+        val ref =
+            FirebaseFirestore.getInstance().collection("task_offers")
+                .whereEqualTo("employeeId", userId)
+                .whereEqualTo("taskId", taskId)
+        ref.get()
+            .addOnSuccessListener {
+                if (it.isEmpty) {
+                    offerAlreadySent.postValue(false)
+                } else {
+                    offerAlreadySent.postValue(true)
+                }
+            }.addOnFailureListener {
+                offerAlreadySent.postValue(false)
+            }
     }
 
 }

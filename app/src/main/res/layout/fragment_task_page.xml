@@ -110,13 +110,14 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
-            android:id="@+id/create_task_button"
+            android:id="@+id/offer_button"
             style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
             android:text="Offer To Do The Task"
+            android:visibility="gone"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:tint="@color/white"

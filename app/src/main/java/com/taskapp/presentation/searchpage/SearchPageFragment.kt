@@ -21,6 +21,8 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
     private var _binding: FragmentSearchPageBinding? = null
     private val binding get() = _binding!!
 
+    private val viewModel: SearchPageViewModel by viewModels()
+
     private lateinit var mAuth: FirebaseAuth
     private lateinit var adapter: SearchTaskRecyclerAdapter
     private var tasks: ArrayList<Task> = arrayListOf<Task>()

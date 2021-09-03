@@ -41,5 +41,9 @@
         android:id="@+id/taskPageFragment"
         android:name="com.taskapp.presentation.searchpage.TaskPageFragment"
         android:label="TaskPageFragment"
-        tools:layout="@layout/fragment_task_page" />
+        tools:layout="@layout/fragment_task_page" >
+        <action
+            android:id="@+id/action_taskPageFragment_to_searchPageFragment"
+            app:destination="@id/searchPageFragment" />
+    </fragment>
 </navigation>
