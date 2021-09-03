@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -21,12 +20,11 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
     private var _binding: FragmentSearchPageBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: SearchPageViewModel by viewModels()
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var adapter: SearchTaskRecyclerAdapter
-    private var tasks: ArrayList<Task> = arrayListOf<Task>()
-    private var taskLsId: ArrayList<String> = arrayListOf<String>()
+    private var tasks: ArrayList<Task> = arrayListOf()
+    private var taskLsId: ArrayList<String> = arrayListOf()
     private lateinit var listener: SearchTaskRecyclerAdapter.SearchTaskClickInterface
 
     override fun onCreateView(
@@ -48,7 +46,8 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
         binding.progressBar.visibility = View.VISIBLE
         val ref =
             mAuth.currentUser?.let {
-                FirebaseFirestore.getInstance().collection("tasks")
+                FirebaseFirestore.getInstance()
+                    .collection("tasks")
                     .whereNotEqualTo("employer_id", it.uid)
             }
         ref?.get()
@@ -57,7 +56,7 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
                 tasks.clear()
                 for (document in documents) {
                     taskLsId.add(document.id)
-                    tasks.add(document.toObject<Task>())
+                    tasks.add(document.toObject())
                 }
                 adapter = SearchTaskRecyclerAdapter(
                     tasks,
