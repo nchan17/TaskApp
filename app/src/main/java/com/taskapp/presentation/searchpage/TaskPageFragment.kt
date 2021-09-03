@@ -35,7 +35,7 @@ class TaskPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.progressBar.visibility = View.VISIBLE
+        binding.progressBar.visibility = VISIBLE
         mAuth = FirebaseAuth.getInstance()
 
         val employerId = arguments?.getString(TASK_EMPLOYER_ID)

@@ -15,11 +15,11 @@ import com.google.firebase.firestore.ktx.toObject
 import com.taskapp.R
 import com.taskapp.domain.Task
 import com.taskapp.databinding.FragmentSearchPageBinding
+import com.taskapp.domain.Status
 
 class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClickInterface {
     private var _binding: FragmentSearchPageBinding? = null
     private val binding get() = _binding!!
-
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var adapter: SearchTaskRecyclerAdapter
@@ -55,8 +55,11 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
                 taskLsId.clear()
                 tasks.clear()
                 for (document in documents) {
-                    taskLsId.add(document.id)
-                    tasks.add(document.toObject())
+                    val currTask = document.toObject() as Task
+                    if (currTask.status == Status.TO_DO) {
+                        taskLsId.add(document.id)
+                        tasks.add(document.toObject())
+                    }
                 }
                 adapter = SearchTaskRecyclerAdapter(
                     tasks,

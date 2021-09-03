@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_myTasksFragment_to_createTaskFragment"
             app:destination="@id/createTaskFragment" />
+        <action
+            android:id="@+id/action_myTasksFragment_to_myCreatedTasksFragment"
+            app:destination="@id/myCreatedTasksFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchPageFragment"
@@ -46,4 +49,9 @@
             android:id="@+id/action_taskPageFragment_to_searchPageFragment"
             app:destination="@id/searchPageFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/myCreatedTasksFragment"
+        android:name="com.taskapp.presentation.mytaskspage.MyCreatedTasksFragment"
+        android:label="fragment_my_created_tasks"
+        tools:layout="@layout/fragment_my_created_tasks" />
 </navigation>

@@ -10,7 +10,8 @@ import com.taskapp.domain.Task
 
 class MyTasksRecyclerAdapter(
     private var listGroup: ArrayList<String>,
-    private var listChild: HashMap<String, ArrayList<Task>>
+    private var listChild: HashMap<String, ArrayList<Task>>,
+    private var listener: MyTasksClickInterface
 ) : BaseExpandableListAdapter() {
 
     override fun getGroupCount(): Int {
@@ -86,11 +87,19 @@ class MyTasksRecyclerAdapter(
         price.text = sChild.price.toString() + " ₾"
         time.text = date
 
+        view.setOnClickListener {
+            listener.onItemClick(groupPosition, childPosition)
+        }
+
         return view
     }
 
     override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {
-        return false
+        return true
+    }
+
+    interface MyTasksClickInterface {
+        fun onItemClick(groupPosition: Int, childPosition: Int)
     }
 
 }
