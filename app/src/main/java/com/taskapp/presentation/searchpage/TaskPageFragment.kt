@@ -44,10 +44,25 @@ class TaskPageFragment : Fragment() {
         taskId = arguments?.getString(TASK_ID)!!
         status = arguments?.getString(TASK_STATUS)!!
 
-        if (fragmentType == TYPE.MY_TASKS_IN_PROGRESS.name) {
-            binding.doneButton.visibility = VISIBLE
-        } else if (fragmentType == TYPE.SEARCH_TO_DO.name) {
-            mAuth.uid?.let { viewModel.checkIfOfferAlreadySent(it, taskId) }
+        when (fragmentType) {
+            TYPE.MY_TASKS_IN_PROGRESS.name -> {
+                binding.doneButton.visibility = VISIBLE
+            }
+            TYPE.SEARCH_TO_DO.name -> {
+                mAuth.uid?.let { viewModel.checkIfOfferAlreadySent(it, taskId) }
+            }
+            TYPE.MY_CREATED_IN_PROGRESS.name -> {
+                binding.infoTextView.visibility = VISIBLE
+                binding.infoTextView.text = "This user is working on your Task!"
+            }
+            TYPE.ARCHIVE.name -> {
+                binding.infoTextView.visibility = VISIBLE
+                binding.infoTextView.text = "You finished this user's Task!"
+            }
+            TYPE.ARCHIVE_MY_CREATED.name -> {
+                binding.infoTextView.visibility = VISIBLE
+                binding.infoTextView.text = "This user finished your Task!"
+            }
         }
 
         setUpViews()
@@ -104,6 +119,9 @@ class TaskPageFragment : Fragment() {
         viewModel.offerAlreadySent.observe(viewLifecycleOwner, { result ->
             if (!result) {
                 binding.offerButton.visibility = VISIBLE
+            } else {
+                binding.infoTextView.visibility = VISIBLE
+                binding.infoTextView.text = "You've already sent an offer!"
             }
         })
 
@@ -144,6 +162,9 @@ class TaskPageFragment : Fragment() {
         enum class TYPE {
             SEARCH_TO_DO,
             MY_TASKS_IN_PROGRESS,
+            MY_CREATED_IN_PROGRESS,
+            ARCHIVE,
+            ARCHIVE_MY_CREATED
         }
 
         fun newBundleInstance(

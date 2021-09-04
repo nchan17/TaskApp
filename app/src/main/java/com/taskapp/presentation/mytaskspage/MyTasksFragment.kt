@@ -15,6 +15,7 @@ import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.taskapp.R
 import com.taskapp.databinding.FragmentMyTasksBinding
+import com.taskapp.domain.Status
 import com.taskapp.domain.Task
 import com.taskapp.presentation.searchpage.TaskPageFragment
 
@@ -72,6 +73,8 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                 binding.myTasksExpandable.setAdapter(adapter)
                 binding.myTasksExpandable.expandGroup(0)
                 binding.myTasksExpandable.expandGroup(1)
+                binding.myTasksExpandable.expandGroup(2)
+                binding.myTasksExpandable.expandGroup(3)
                 binding.progressBar.visibility = GONE
             }
         })
@@ -118,8 +121,37 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                     ?.navigate(R.id.action_myTasksFragment_to_taskPageFragment, bundle)
             }
             1 -> {
-                val bundle = MyCreatedTasksFragment.newBundleInstance(
+                if (currTask.status == Status.TO_DO) {
+                    val bundle = MyCreatedTasksFragment.newBundleInstance(
+                        currTask.id!!,
+                        currTask.title,
+                        currTask.description,
+                        currTask.price.toString() + " ₾",
+                        date,
+                        currTask.status.name
+                    )
+                    view?.findNavController()
+                        ?.navigate(R.id.action_myTasksFragment_to_myCreatedTasksFragment, bundle)
+                } else if (currTask.status == Status.IN_PROGRESS) {
+                    val bundle = TaskPageFragment.newBundleInstance(
+                        TaskPageFragment.Companion.TYPE.MY_CREATED_IN_PROGRESS.name,
+                        currTask.id!!,
+                        currTask.employee_id,
+                        currTask.title,
+                        currTask.description,
+                        currTask.price.toString() + " ₾",
+                        date,
+                        currTask.status.name
+                    )
+                    view?.findNavController()
+                        ?.navigate(R.id.action_myTasksFragment_to_taskPageFragment, bundle)
+                }
+            }
+            2 -> {
+                val bundle = TaskPageFragment.newBundleInstance(
+                    TaskPageFragment.Companion.TYPE.ARCHIVE.name,
                     currTask.id!!,
+                    currTask.employer_id,
                     currTask.title,
                     currTask.description,
                     currTask.price.toString() + " ₾",
@@ -127,17 +159,23 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                     currTask.status.name
                 )
                 view?.findNavController()
-                    ?.navigate(R.id.action_myTasksFragment_to_myCreatedTasksFragment, bundle)
-            }
-            2 -> {
-//                viewModel.archivedAssignedTasks[childPosition]
+                    ?.navigate(R.id.action_myTasksFragment_to_taskPageFragment, bundle)
             }
             else -> {
-//                viewModel.archivedMyCreatedTasks[childPosition]
+                val bundle = TaskPageFragment.newBundleInstance(
+                    TaskPageFragment.Companion.TYPE.ARCHIVE_MY_CREATED.name,
+                    currTask.id!!,
+                    currTask.employee_id,
+                    currTask.title,
+                    currTask.description,
+                    currTask.price.toString() + " ₾",
+                    date,
+                    currTask.status.name
+                )
+                view?.findNavController()
+                    ?.navigate(R.id.action_myTasksFragment_to_taskPageFragment, bundle)
             }
         }
-
-
     }
 
     private fun showToast(str: String) {

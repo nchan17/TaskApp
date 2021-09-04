@@ -117,10 +117,10 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
             android:text="Offer To Do The Task"
-            android:visibility="gone"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:tint="@color/white"
+            android:visibility="gone"
             app:icon="@drawable/ic_baseline_add_24"
             app:iconTint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
@@ -135,12 +135,28 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
             android:text="Finish!"
-            android:visibility="gone"
             android:textAllCaps="false"
             android:textColor="@color/white"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+        <TextView
+            android:id="@+id/info_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+            tools:text="@string/create_task_header_text" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
