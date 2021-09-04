@@ -115,7 +115,7 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                     currTask.description,
                     currTask.price.toString() + " ₾",
                     date,
-                    currTask.status.name
+                    currTask.status.name,
                 )
                 view?.findNavController()
                     ?.navigate(R.id.action_myTasksFragment_to_taskPageFragment, bundle)
@@ -156,7 +156,7 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                     currTask.description,
                     currTask.price.toString() + " ₾",
                     date,
-                    currTask.status.name
+                    currTask.status.name,
                 )
                 view?.findNavController()
                     ?.navigate(R.id.action_myTasksFragment_to_taskPageFragment, bundle)
@@ -170,7 +170,7 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                     currTask.description,
                     currTask.price.toString() + " ₾",
                     date,
-                    currTask.status.name
+                    currTask.status.name,
                 )
                 view?.findNavController()
                     ?.navigate(R.id.action_myTasksFragment_to_taskPageFragment, bundle)

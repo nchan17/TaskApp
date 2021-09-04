@@ -3,12 +3,16 @@ package com.taskapp.presentation.searchpage
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
+import com.taskapp.R
+import com.taskapp.domain.Review
 import com.taskapp.domain.Status
 import com.taskapp.domain.TaskOffer
 import com.taskapp.domain.User
@@ -36,7 +40,15 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
         MutableLiveData<Boolean>()
     }
 
+    val alreadyReviewed: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
     val isFinishTaskSuccessful: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
+    val isSendReviewSuccessful: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
 
@@ -94,6 +106,21 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
             }
     }
 
+    fun checkIfAlreadyReviewed(taskId: String, userId: String) {
+        val ref =
+            FirebaseFirestore.getInstance().collection("ratings").document(taskId + userId)
+        ref.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    alreadyReviewed.postValue(true)
+                } else {
+                    alreadyReviewed.postValue(false)
+                }
+            }.addOnFailureListener {
+                alreadyReviewed.postValue(false)
+            }
+    }
+
     fun sendFinished(taskId: String) {
         val setEmployeeTask =
             FirebaseFirestore.getInstance().collection("tasks").document(taskId).update(
@@ -105,6 +132,19 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
             isFinishTaskSuccessful.postValue(true)
         }.addOnFailureListener {
             isFinishTaskSuccessful.postValue(false)
+        }
+    }
+
+    fun sendReview(review: Review, taskId: String) {
+        val ref =
+            FirebaseFirestore.getInstance().collection("ratings")
+                .document(taskId + review.reviewee_id)
+        ref.set(review).addOnCompleteListener {
+            if (it.isSuccessful) {
+                isSendReviewSuccessful.postValue(true)
+            } else {
+                isSendReviewSuccessful.postValue(false)
+            }
         }
     }
 

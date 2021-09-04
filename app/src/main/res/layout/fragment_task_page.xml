@@ -149,14 +149,29 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:visibility="gone"
             android:textColor="?attr/colorPrimary"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
             tools:text="@string/create_task_header_text" />
+
+        <Button
+            android:id="@+id/review_button"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Review Tasker!"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/info_text_view" />
 
         <ProgressBar
             android:id="@+id/progress_bar"

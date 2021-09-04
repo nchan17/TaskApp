@@ -1,11 +1,17 @@
 package com.taskapp.presentation.searchpage
 
+import android.R.attr.*
+import android.app.AlertDialog
 import android.os.Bundle
+import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.RatingBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,6 +20,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.taskapp.R
 import com.taskapp.domain.User
 import com.taskapp.databinding.FragmentTaskPageBinding
+import android.widget.LinearLayout
+import com.taskapp.domain.Review
+import java.util.*
+
 
 class TaskPageFragment : Fragment() {
     private var _binding: FragmentTaskPageBinding? = null
@@ -24,6 +34,7 @@ class TaskPageFragment : Fragment() {
     private lateinit var taskId: String
     private lateinit var fragmentType: String
     private lateinit var status: String
+    private lateinit var userId: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +50,7 @@ class TaskPageFragment : Fragment() {
         binding.progressBar.visibility = VISIBLE
         mAuth = FirebaseAuth.getInstance()
 
-        val employerId = arguments?.getString(TASK_EMPLOYER_ID)
+        userId = arguments?.getString(TASK_EMPLOYER_ID)!!
         fragmentType = arguments?.getString(TASK_PAGE_FRAGMENT_TYPE)!!
         taskId = arguments?.getString(TASK_ID)!!
         status = arguments?.getString(TASK_STATUS)!!
@@ -58,17 +69,69 @@ class TaskPageFragment : Fragment() {
             TYPE.ARCHIVE.name -> {
                 binding.infoTextView.visibility = VISIBLE
                 binding.infoTextView.text = "You finished this user's Task!"
+                viewModel.checkIfAlreadyReviewed(taskId, userId)
             }
             TYPE.ARCHIVE_MY_CREATED.name -> {
                 binding.infoTextView.visibility = VISIBLE
                 binding.infoTextView.text = "This user finished your Task!"
+                viewModel.checkIfAlreadyReviewed(taskId, userId)
             }
         }
 
         setUpViews()
         setupClickListeners()
-        employerId?.let { viewModel.getAllUserData(it) }
+        userId?.let { viewModel.getAllUserData(it) }
         addObservers(view)
+    }
+
+    private fun showReviewDialog() {
+        val inputLp = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        inputLp.setMargins(50, 20, 50, 20)
+
+        val input = EditText(context)
+        input.hint = "Enter Comment"
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        input.layoutParams = inputLp
+
+        val ratingLp = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        ratingLp.setMargins(50, 20, 50, 20)
+
+        val ratingBar = RatingBar(context)
+        ratingBar.numStars = 5
+        ratingBar.stepSize = 0.1F
+        ratingBar.layoutParams = ratingLp
+        ratingBar.isClickable = true
+
+        val linearLayout = LinearLayout(context)
+        linearLayout.orientation = LinearLayout.VERTICAL
+        linearLayout.addView(ratingBar)
+        linearLayout.addView(input)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+            .setTitle("Review Tasker!")
+            .setView(linearLayout)
+            .setPositiveButton("Review") { _, _ ->
+                val mComment = input.text.toString()
+                val mRating = ratingBar.rating
+                viewModel.sendReview(
+                    Review(
+                        mAuth.uid!!,
+                        userId,
+                        mRating.toDouble(),
+                        mComment,
+                        Calendar.getInstance().time
+                    ),
+                    taskId
+                )
+            }.setNegativeButton("Cancel") { dialog, _ ->
+                dialog.cancel()
+            }
+        builder.show()
     }
 
     private fun setupClickListeners() {
@@ -77,6 +140,9 @@ class TaskPageFragment : Fragment() {
         }
         binding.doneButton.setOnClickListener {
             viewModel.sendFinished(taskId)
+        }
+        binding.reviewButton.setOnClickListener {
+            showReviewDialog()
         }
     }
 
@@ -129,6 +195,21 @@ class TaskPageFragment : Fragment() {
             if (result) {
                 showToast("Congrats! Task is DONE!")
                 Navigation.findNavController(view).popBackStack()
+            } else {
+                showToast(getString(R.string.general_error))
+            }
+        })
+
+        viewModel.alreadyReviewed.observe(viewLifecycleOwner, { result ->
+            if (!result) {
+                binding.reviewButton.visibility = VISIBLE
+            }
+        })
+
+        viewModel.isSendReviewSuccessful.observe(viewLifecycleOwner, { result ->
+            if (result) {
+                showToast("Your review was sent!")
+                binding.reviewButton.visibility = GONE
             } else {
                 showToast(getString(R.string.general_error))
             }
