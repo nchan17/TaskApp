@@ -122,7 +122,7 @@ class TaskPageFragment : Fragment() {
                     Review(
                         mAuth.uid!!,
                         userId,
-                        mRating.toDouble(),
+                        mRating,
                         mComment,
                         Calendar.getInstance().time
                     ),

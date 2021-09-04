@@ -133,6 +133,7 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
 
         Tasks.whenAll(taskList)
             .addOnSuccessListener {
+                offersUserList.clear()
                 taskList.forEachIndexed { index, task ->
                     val user = task.result?.toObject<User>()
                     if (user != null) {

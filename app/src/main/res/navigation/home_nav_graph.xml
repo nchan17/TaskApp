@@ -48,5 +48,9 @@
         android:id="@+id/myCreatedTasksFragment"
         android:name="com.taskapp.presentation.mytaskspage.MyCreatedTasksFragment"
         android:label="fragment_my_created_tasks"
-        tools:layout="@layout/fragment_my_created_tasks" />
+        tools:layout="@layout/fragment_my_created_tasks" >
+        <action
+            android:id="@+id/action_myCreatedTasksFragment_to_userPageFragment2"
+            app:destination="@id/userPageFragment2" />
+    </fragment>
 </navigation>

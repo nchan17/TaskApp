@@ -1,6 +1,7 @@
 package com.taskapp.presentation.userpage
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,15 +17,20 @@ import android.content.Intent
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.taskapp.R
 
 
-class UserPageFragment : Fragment() {
+class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInterface {
     private var _binding: FragmentUserPageBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var userId: String
+    private lateinit var mAuth: FirebaseAuth
     private val viewModel: UserPageViewModel by viewModels()
+
+    private lateinit var adapter: UserPageReviewsAdapter
+    private lateinit var listener: UserPageReviewsAdapter.ReviewTaskClickInterface
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,11 +44,29 @@ class UserPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.progressBar.visibility = VISIBLE
-        userId = FirebaseAuth.getInstance().currentUser!!.uid
+        binding.recyclerProgressBar.visibility = VISIBLE
+        mAuth = FirebaseAuth.getInstance()
+        userId = mAuth.uid!!
+        arguments?.getString(USER_PAGE_USER_ID)?.let { userId = it }
+
+        if (userId == mAuth.uid!!) {
+            binding.logoutButton.visibility = VISIBLE
+        } else {
+            binding.logoutButton.visibility = GONE
+        }
+        val linearLayoutManager = LinearLayoutManager(context)
+        binding.recyclerView.layoutManager = linearLayoutManager
+
         addListeners()
         binding.ratingBar.rating = 4.5F
         viewModel.getAllUserData(userId)
+        viewModel.getUserReviews(userId)
         addObservers()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = this
     }
 
     private fun addListeners() {
@@ -96,6 +120,17 @@ class UserPageFragment : Fragment() {
                 binding.progressBar.visibility = GONE
             }
         })
+
+        viewModel.isGetReviewsSuccessful.observe(viewLifecycleOwner, { result ->
+            if (result) {
+                adapter = UserPageReviewsAdapter(viewModel.reviewPageDataLs, listener)
+                binding.recyclerView.adapter = adapter
+                binding.recyclerProgressBar.visibility = GONE
+            } else {
+                showToast(getString(R.string.general_error))
+                binding.recyclerProgressBar.visibility = GONE
+            }
+        })
     }
 
 
@@ -113,8 +148,8 @@ class UserPageFragment : Fragment() {
     private fun showUserData(user: User?) {
         if (user != null) {
             binding.fullNameTextView.text = user.fullName
-            binding.emailTextView.text = user.email
-            binding.phoneNumberTextView.text = user.phone
+            binding.emailTextView.text = "Email: " + user.email
+            binding.phoneNumberTextView.text = "Phone: " + user.phone
         }
     }
 
@@ -125,6 +160,22 @@ class UserPageFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onUserClick(index: Int) {
+//        TODO("Not yet implemented")
+    }
+
+    companion object {
+        private const val USER_PAGE_USER_ID = "USER_PAGE_USER_ID"
+
+        fun newBundleInstance(
+            user_id: String
+        ): Bundle {
+            val bundle = Bundle()
+            bundle.putString(USER_PAGE_USER_ID, user_id)
+            return bundle
+        }
     }
 }
 

@@ -72,8 +72,6 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
                 binding.progressBar.visibility = View.GONE
                 showToast(getString(R.string.general_error))
             }
-
-
     }
 
     override fun onAttach(context: Context) {

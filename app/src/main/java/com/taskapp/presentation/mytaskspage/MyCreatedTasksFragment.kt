@@ -9,12 +9,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.taskapp.R
 import com.taskapp.databinding.FragmentMyCreatedTasksBinding
 import com.taskapp.domain.Status
 import com.taskapp.domain.User
+import com.taskapp.presentation.searchpage.TaskPageFragment
+import com.taskapp.presentation.userpage.UserPageFragment
 
 class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInterface {
     private var _binding: FragmentMyCreatedTasksBinding? = null
@@ -25,7 +28,6 @@ class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInter
     private lateinit var taskId: String
 
     private lateinit var adapter: TaskOffersAdapter
-    private var users: ArrayList<User> = arrayListOf()
     private lateinit var listener: TaskOffersAdapter.TaskOfferClickInterface
 
     override fun onCreateView(
@@ -133,7 +135,11 @@ class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInter
     }
 
     override fun onUserClick(index: Int) {
-//        TODO("Not yet implemented")
+        val bundle = UserPageFragment.newBundleInstance(
+            viewModel.offersUserList[index].id!!
+        )
+        view?.findNavController()
+            ?.navigate(R.id.action_myCreatedTasksFragment_to_userPageFragment2, bundle)
     }
 
     override fun onAcceptOfferClick(index: Int) {
