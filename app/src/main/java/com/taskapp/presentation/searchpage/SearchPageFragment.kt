@@ -97,12 +97,14 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
             )
                 .toString()
         val bundle = TaskPageFragment.newBundleInstance(
+            TaskPageFragment.Companion.TYPE.SEARCH_TO_DO.name,
             taskLsId[index],
             tasks[index].employer_id,
             tasks[index].title,
             tasks[index].description,
             tasks[index].price.toString() + " ₾",
-            date
+            date,
+            tasks[index].status.name
         )
 
         view?.findNavController()

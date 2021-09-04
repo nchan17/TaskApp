@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
+import com.taskapp.domain.Status
 import com.taskapp.domain.TaskOffer
 import com.taskapp.domain.User
 import java.io.File
@@ -32,6 +33,10 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     val offerAlreadySent: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
+    val isFinishTaskSuccessful: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
 
@@ -87,6 +92,20 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
             }.addOnFailureListener {
                 offerAlreadySent.postValue(false)
             }
+    }
+
+    fun sendFinished(taskId: String) {
+        val setEmployeeTask =
+            FirebaseFirestore.getInstance().collection("tasks").document(taskId).update(
+                mapOf(
+                    "status" to Status.DONE
+                )
+            )
+        setEmployeeTask.addOnSuccessListener {
+            isFinishTaskSuccessful.postValue(true)
+        }.addOnFailureListener {
+            isFinishTaskSuccessful.postValue(false)
+        }
     }
 
 }

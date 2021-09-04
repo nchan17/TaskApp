@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.taskapp.R
 import com.taskapp.databinding.FragmentMyTasksBinding
 import com.taskapp.domain.Task
+import com.taskapp.presentation.searchpage.TaskPageFragment
 
 class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface {
     private var _binding: FragmentMyTasksBinding? = null
@@ -100,20 +101,31 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
         val date = currTask.creation_data?.date.toString() + "-" +
                 currTask.creation_data?.month.toString() + "-" +
                 currTask.creation_data?.year?.plus(1900).toString()
-        val bundle = MyCreatedTasksFragment.newBundleInstance(
-            currTask.id!!,
-            currTask.title,
-            currTask.description,
-            currTask.price.toString() + " ₾",
-            date,
-            currTask.status.name
-        )
 
         when (groupPosition) {
             0 -> {
-//                viewModel.inProgressAssignedTasks[childPosition]
+                val bundle = TaskPageFragment.newBundleInstance(
+                    TaskPageFragment.Companion.TYPE.MY_TASKS_IN_PROGRESS.name,
+                    currTask.id!!,
+                    currTask.employee_id,
+                    currTask.title,
+                    currTask.description,
+                    currTask.price.toString() + " ₾",
+                    date,
+                    currTask.status.name
+                )
+                view?.findNavController()
+                    ?.navigate(R.id.action_myTasksFragment_to_taskPageFragment, bundle)
             }
             1 -> {
+                val bundle = MyCreatedTasksFragment.newBundleInstance(
+                    currTask.id!!,
+                    currTask.title,
+                    currTask.description,
+                    currTask.price.toString() + " ₾",
+                    date,
+                    currTask.status.name
+                )
                 view?.findNavController()
                     ?.navigate(R.id.action_myTasksFragment_to_myCreatedTasksFragment, bundle)
             }

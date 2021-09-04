@@ -22,7 +22,8 @@ class TaskPageFragment : Fragment() {
     private val viewModel: SearchPageViewModel by viewModels()
     private lateinit var mAuth: FirebaseAuth
     private lateinit var taskId: String
-
+    private lateinit var fragmentType: String
+    private lateinit var status: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,18 +40,28 @@ class TaskPageFragment : Fragment() {
         mAuth = FirebaseAuth.getInstance()
 
         val employerId = arguments?.getString(TASK_EMPLOYER_ID)
+        fragmentType = arguments?.getString(TASK_PAGE_FRAGMENT_TYPE)!!
         taskId = arguments?.getString(TASK_ID)!!
+        status = arguments?.getString(TASK_STATUS)!!
+
+        if (fragmentType == TYPE.MY_TASKS_IN_PROGRESS.name) {
+            binding.doneButton.visibility = VISIBLE
+        } else if (fragmentType == TYPE.SEARCH_TO_DO.name) {
+            mAuth.uid?.let { viewModel.checkIfOfferAlreadySent(it, taskId) }
+        }
 
         setUpViews()
         setupClickListeners()
         employerId?.let { viewModel.getAllUserData(it) }
-        mAuth.uid?.let { viewModel.checkIfOfferAlreadySent(it, taskId) }
         addObservers(view)
     }
 
     private fun setupClickListeners() {
         binding.offerButton.setOnClickListener {
             viewModel.sendOffer(mAuth.uid!!, taskId)
+        }
+        binding.doneButton.setOnClickListener {
+            viewModel.sendFinished(taskId)
         }
     }
 
@@ -95,6 +106,15 @@ class TaskPageFragment : Fragment() {
                 binding.offerButton.visibility = VISIBLE
             }
         })
+
+        viewModel.isFinishTaskSuccessful.observe(viewLifecycleOwner, { result ->
+            if (result) {
+                showToast("Congrats! Task is DONE!")
+                Navigation.findNavController(view).popBackStack()
+            } else {
+                showToast(getString(R.string.general_error))
+            }
+        })
     }
 
 
@@ -118,22 +138,33 @@ class TaskPageFragment : Fragment() {
         private const val TASK_DESC = "TASK_DESC"
         private const val TASK_PRICE = "TASK_PRICE"
         private const val TASK_CREATION_DATA = "TASK_CREATION_DATA"
+        private const val TASK_PAGE_FRAGMENT_TYPE = "TASK_PAGE_FRAGMENT_TYPE"
+        private const val TASK_STATUS = "TASK_STATUS"
+
+        enum class TYPE {
+            SEARCH_TO_DO,
+            MY_TASKS_IN_PROGRESS,
+        }
 
         fun newBundleInstance(
+            fragmentType: String,
             taskId: String,
             employer_id: String?,
             title: String?,
             desc: String?,
             price: String,
-            creation_data: String
+            creation_data: String,
+            status: String
         ): Bundle {
             val bundle = Bundle()
+            bundle.putString(TASK_PAGE_FRAGMENT_TYPE, fragmentType)
             bundle.putString(TASK_ID, taskId)
             bundle.putString(TASK_EMPLOYER_ID, employer_id)
             bundle.putString(TASK_TITLE, title)
             bundle.putString(TASK_DESC, desc)
             bundle.putString(TASK_PRICE, price)
             bundle.putString(TASK_CREATION_DATA, creation_data)
+            bundle.putString(TASK_STATUS, status)
             return bundle
         }
     }

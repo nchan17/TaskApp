@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_myTasksFragment_to_myCreatedTasksFragment"
             app:destination="@id/myCreatedTasksFragment" />
+        <action
+            android:id="@+id/action_myTasksFragment_to_taskPageFragment"
+            app:destination="@id/taskPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchPageFragment"
