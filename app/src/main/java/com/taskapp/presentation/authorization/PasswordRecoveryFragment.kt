@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import com.taskapp.R
 import com.taskapp.databinding.FragmentPasswordRecoveryBinding
@@ -48,6 +49,7 @@ class PasswordRecoveryFragment : Fragment() {
             if (it.isSuccessful) {
                 showToast(getString(R.string.check_email_for_password_reset_text))
                 binding.progressBar.visibility = View.GONE
+                view?.let { it1 -> Navigation.findNavController(it1).popBackStack() }
             } else {
                 showToast(getString(R.string.something_wrong_error_text))
                 binding.progressBar.visibility = View.GONE

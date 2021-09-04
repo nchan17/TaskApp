@@ -108,7 +108,9 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
 
     fun checkIfAlreadyReviewed(taskId: String, userId: String) {
         val ref =
-            FirebaseFirestore.getInstance().collection("ratings").document(taskId + userId)
+            FirebaseFirestore.getInstance()
+                .collection("ratings")
+                .document(taskId + userId)
         ref.get()
             .addOnSuccessListener { document ->
                 if (document.exists()) {
@@ -124,9 +126,7 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
     fun sendFinished(taskId: String) {
         val setEmployeeTask =
             FirebaseFirestore.getInstance().collection("tasks").document(taskId).update(
-                mapOf(
-                    "status" to Status.DONE
-                )
+                mapOf("status" to Status.DONE)
             )
         setEmployeeTask.addOnSuccessListener {
             isFinishTaskSuccessful.postValue(true)
