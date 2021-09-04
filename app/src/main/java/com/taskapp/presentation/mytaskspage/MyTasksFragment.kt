@@ -69,6 +69,8 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                 listChild[listGroup[3]] = viewModel.archivedMyCreatedTasks
                 adapter = MyTasksRecyclerAdapter(listGroup, listChild, listener)
                 binding.myTasksExpandable.setAdapter(adapter)
+                binding.myTasksExpandable.expandGroup(0)
+                binding.myTasksExpandable.expandGroup(1)
                 binding.progressBar.visibility = GONE
             }
         })
@@ -103,7 +105,8 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
             currTask.title,
             currTask.description,
             currTask.price.toString() + " ₾",
-            date
+            date,
+            currTask.status.name
         )
 
         when (groupPosition) {

@@ -78,14 +78,13 @@ class TaskPageFragment : Fragment() {
             } else {
                 showToast("error getting user data")
             }
-            binding.progressBar.visibility = View.GONE
+            binding.progressBar.visibility = GONE
         })
 
         viewModel.sendOfferIsSuccessful.observe(viewLifecycleOwner, { result ->
             if (result) {
                 showToast("Offer was sent")
-                Navigation.findNavController(view)
-                    .navigate(R.id.action_taskPageFragment_to_searchPageFragment)
+                Navigation.findNavController(view).popBackStack()
             } else {
                 showToast(getString(R.string.general_error))
             }

@@ -60,9 +60,7 @@ class CreateTaskFragment : Fragment() {
             if (it.isSuccessful) {
                 showToast(getString(R.string.create_task_success_text))
                 binding.progressBar.visibility = View.GONE
-                Navigation.findNavController(view)
-                    .navigate(R.id.action_createTaskFragment_to_myTasksFragment)
-
+                Navigation.findNavController(view).popBackStack()
             } else {
                 showToast(getString(R.string.general_error))
                 binding.progressBar.visibility = View.GONE

@@ -1,5 +1,6 @@
 package com.taskapp.presentation.mytaskspage
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,16 +8,25 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.taskapp.R
 import com.taskapp.databinding.FragmentMyCreatedTasksBinding
+import com.taskapp.domain.Status
+import com.taskapp.domain.User
 
-class MyCreatedTasksFragment : Fragment() {
+class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInterface {
     private var _binding: FragmentMyCreatedTasksBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: MyTasksViewModel by viewModels()
     private lateinit var mAuth: FirebaseAuth
     private lateinit var taskId: String
+
+    private lateinit var adapter: TaskOffersAdapter
+    private var users: ArrayList<User> = arrayListOf()
+    private lateinit var listener: TaskOffersAdapter.TaskOfferClickInterface
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,14 +42,51 @@ class MyCreatedTasksFragment : Fragment() {
 
         binding.progressBar.visibility = View.VISIBLE
         mAuth = FirebaseAuth.getInstance()
+        val linearLayoutManager = LinearLayoutManager(context)
+        binding.recyclerView.layoutManager = linearLayoutManager
 
         taskId = arguments?.getString(TASK_ID)!!
+        if (arguments?.getString(TASK_STATUS) == Status.TO_DO.name) {
+            viewModel.getTaskOffers(taskId)
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
+
         setUpViews()
         setupClickListeners()
+        setupObservers(view)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = this
     }
 
     private fun setupClickListeners() {
 //        TODO("Not yet implemented")
+    }
+
+    private fun setupObservers(view: View) {
+        viewModel.isGetOffersUserDataSuccessful.observe(viewLifecycleOwner, { result ->
+            if (result) {
+                adapter =
+                    TaskOffersAdapter(viewModel.offersUserList, viewModel.profilePicList, listener)
+                binding.recyclerView.adapter = adapter
+                binding.progressBar.visibility = View.GONE
+            } else {
+                showToast(getString(R.string.general_error))
+                binding.progressBar.visibility = View.GONE
+            }
+        })
+
+        viewModel.isAcceptOfferSuccessful.observe(viewLifecycleOwner, { result ->
+            if (result) {
+                showToast("Offer was accepted!")
+                Navigation.findNavController(view).popBackStack()
+            } else {
+                showToast(getString(R.string.general_error))
+            }
+        })
     }
 
     private fun setUpViews() {
@@ -63,6 +110,7 @@ class MyCreatedTasksFragment : Fragment() {
         private const val TASK_TITLE = "TASK_TITLE"
         private const val TASK_DESC = "TASK_DESC"
         private const val TASK_PRICE = "TASK_PRICE"
+        private const val TASK_STATUS = "TASK_STATUS"
         private const val TASK_CREATION_DATA = "TASK_CREATION_DATA"
 
         fun newBundleInstance(
@@ -70,7 +118,8 @@ class MyCreatedTasksFragment : Fragment() {
             title: String?,
             desc: String?,
             price: String,
-            creation_data: String
+            creation_data: String,
+            status: String
         ): Bundle {
             val bundle = Bundle()
             bundle.putString(TASK_ID, taskId)
@@ -78,7 +127,16 @@ class MyCreatedTasksFragment : Fragment() {
             bundle.putString(TASK_DESC, desc)
             bundle.putString(TASK_PRICE, price)
             bundle.putString(TASK_CREATION_DATA, creation_data)
+            bundle.putString(TASK_STATUS, status)
             return bundle
         }
+    }
+
+    override fun onUserClick(index: Int) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onAcceptOfferClick(index: Int) {
+        viewModel.acceptOffer(viewModel.offersUserList[index].id!!, taskId)
     }
 }

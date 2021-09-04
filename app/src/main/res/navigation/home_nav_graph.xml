@@ -35,20 +35,12 @@
         android:id="@+id/createTaskFragment"
         android:name="com.taskapp.presentation.mytaskspage.CreateTaskFragment"
         android:label="CreateTaskFragment"
-        tools:layout="@layout/fragment_create_task">
-        <action
-            android:id="@+id/action_createTaskFragment_to_myTasksFragment"
-            app:destination="@id/myTasksFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_create_task"/>
     <fragment
         android:id="@+id/taskPageFragment"
         android:name="com.taskapp.presentation.searchpage.TaskPageFragment"
         android:label="TaskPageFragment"
-        tools:layout="@layout/fragment_task_page" >
-        <action
-            android:id="@+id/action_taskPageFragment_to_searchPageFragment"
-            app:destination="@id/searchPageFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_task_page" />
     <fragment
         android:id="@+id/myCreatedTasksFragment"
         android:name="com.taskapp.presentation.mytaskspage.MyCreatedTasksFragment"
