@@ -13,8 +13,8 @@
             android:id="@+id/header_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginHorizontal="@dimen/spacing_m"
+            android:layout_marginTop="@dimen/spacing_l"
             android:gravity="center_horizontal"
             android:textColor="?attr/colorPrimary"
             android:text="@string/create_task_header_text"
@@ -25,8 +25,8 @@
             android:id="@+id/title_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="@dimen/spacing_l"
+            android:layout_marginTop="@dimen/spacing_m"
             android:hint="@string/create_task_title_edit_text_hint"
             android:textSize="24sp">
 
@@ -40,8 +40,8 @@
             android:id="@+id/description_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="@dimen/spacing_l"
+            android:layout_marginTop="@dimen/spacing_m"
             android:hint="@string/create_task_description_edit_text_hint"
             android:textSize="24sp">
 
@@ -54,8 +54,8 @@
             android:id="@+id/price_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="@dimen/spacing_l"
+            android:layout_marginTop="@dimen/spacing_m"
             android:hint="@string/create_task_price_edit_text_hint"
             android:textSize="24sp">
 
@@ -69,8 +69,8 @@
             android:id="@+id/create_task_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="@dimen/spacing_l"
+            android:layout_marginTop="@dimen/spacing_m"
             android:text="@string/create_task_action_button_text"
             android:textAllCaps="false"
             android:textColor="@color/white"
