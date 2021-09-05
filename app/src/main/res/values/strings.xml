@@ -35,6 +35,11 @@
     <string name="create_task_price_edit_text_hint">Price</string>
     <string name="create_task_action_button_text">Create Task</string>
     <string name="create_task_success_text">Task was created</string>
+    <string name="my_tasks_in_progress">In Progress</string>
+    <string name="my_tasks_your_created">Your Created</string>
+    <string name="my_tasks_archive">Archive: Your Completed</string>
+    <string name="my_tasks_archive_your_created">Archive: Your Created</string>
+
 
     <!--    User Page Flow-->
     <string name="user_page_email_text">Email: %1$s</string>

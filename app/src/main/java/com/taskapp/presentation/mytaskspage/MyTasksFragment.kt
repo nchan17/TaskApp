@@ -26,9 +26,8 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
     private var _binding: FragmentMyTasksBinding? = null
     private val binding get() = _binding!!
 
-    private var listGroup =
-        arrayListOf("In Progress", "Your Created", "Archive", "Archive Your Created")
     private var listChild = HashMap<String, ArrayList<Task>>()
+    private var listGroup = arrayListOf<String>()
 
     private val viewModel: MyTasksViewModel by viewModels()
     private lateinit var mAuth: FirebaseAuth
@@ -49,6 +48,12 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
         super.onViewCreated(view, savedInstanceState)
         mAuth = FirebaseAuth.getInstance()
         binding.progressBar.visibility = VISIBLE
+        listGroup = arrayListOf(
+            getString(R.string.my_tasks_in_progress),
+            getString(R.string.my_tasks_your_created),
+            getString(R.string.my_tasks_archive),
+            getString(R.string.my_tasks_archive_your_created)
+        )
 
         binding.createTaskButton.setOnClickListener {
             Navigation.findNavController(view)

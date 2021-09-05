@@ -36,18 +36,22 @@
     <string name="create_task_price_edit_text_hint">ფასი</string>
     <string name="create_task_action_button_text">თასქის შექმნა</string>
     <string name="create_task_success_text">თასქი შეიქმნა</string>
+    <string name="my_tasks_in_progress">მიმდინარე</string>
+    <string name="my_tasks_your_created">თქვენი შექმნილი</string>
+    <string name="my_tasks_archive">არქივი: თქვენი შესრულებული</string>
+    <string name="my_tasks_archive_your_created">არქივი: თქვენი შექმნილი</string>
 
     <!--    User Page Flow-->
-    <string name="user_page_email_text">იმეილი: %1$s</string>
+    <string name="user_page_email_text">Email: %1$s</string>
     <string name="user_page_phone_text">მობილური: %1$s</string>
     <string name="user_page_review_text">%1$d შეფასება</string>
     <string name="user_page_log_out_button_text">გამოსვლა</string>
     <string name="user_page_reviews_header_text">შეფასებები:</string>
 
     <!--    Search Page Flow-->
-    <string name="task_page_user_is_working">ეს იუზერი მოცემულ თასქზე მუშაობს!</string>
-    <string name="task_page_you_finished_task">შენ დაამთავრე ამ იუზერის თასქზე მუშაობა!</string>
-    <string name="task_page_user_finished_task">ამ იუზერმა დაამთავრა მოცემულ თასქზე მუშაობა!</string>
+    <string name="task_page_user_is_working">იუზერი მოცემულ თასქზე მუშაობს!</string>
+    <string name="task_page_you_finished_task">შენ უკვე დაამთავრე ამ თასქზე მუშაობა!</string>
+    <string name="task_page_user_finished_task">იუზერმა დაამთავრა მოცემულ თასქზე მუშაობა!</string>
     <string name="task_page_you_sent_offer">მოთხოვნა უკვე გაგზავნილია!</string>
     <string name="task_page_offer_button_text">შესთავაზეთ თასქის გაკეთება</string>
     <string name="search_task_adapter_gel_text">%1$s ₾</string>
