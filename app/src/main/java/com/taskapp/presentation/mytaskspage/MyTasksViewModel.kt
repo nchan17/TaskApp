@@ -66,6 +66,8 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
                         }
                     }
                 }
+                myCreatedTasks.sortByDescending { it.creation_data }
+                archivedMyCreatedTasks.sortByDescending { it.creation_data }
             }
             if (getMyAssignedTask.isSuccessful) {
                 inProgressAssignedTasks.clear()
@@ -82,6 +84,8 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
                         }
                     }
                 }
+                archivedAssignedTasks.sortByDescending { it.creation_data }
+                inProgressAssignedTasks.sortByDescending { it.creation_data }
             }
             if (!getMyAssignedTask.isSuccessful && !getMyCreatedTask.isSuccessful) {
                 isGetAllTasksSuccessful.postValue(false)

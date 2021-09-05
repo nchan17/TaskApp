@@ -193,6 +193,7 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
                         searchTasksLs.add(currTask)
                     }
                 }
+                searchTasksLs.sortByDescending { it.creation_data }
                 filteredTasksLs.clear()
                 filteredTasksLs.addAll(searchTasksLs)
                 isSearchTasksSuccessful.postValue(true)
