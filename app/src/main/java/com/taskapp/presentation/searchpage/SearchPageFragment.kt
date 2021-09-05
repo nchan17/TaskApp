@@ -16,6 +16,9 @@ import com.taskapp.R
 import com.taskapp.domain.Task
 import com.taskapp.databinding.FragmentSearchPageBinding
 import com.taskapp.domain.Status
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClickInterface {
     private var _binding: FragmentSearchPageBinding? = null
@@ -89,11 +92,13 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
     }
 
     override fun onItemClick(index: Int) {
-        val date =
-            tasks[index].creation_data?.date.toString() + "-" + tasks[index].creation_data?.month.toString() + "-" + tasks[index].creation_data?.year?.plus(
-                1900
-            )
-                .toString()
+        var date = ""
+        tasks[index].creation_data?.let {
+            val mCalendar = Calendar.getInstance()
+            mCalendar.time = it
+            date =
+                SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(mCalendar.time)
+        }
         val bundle = TaskPageFragment.newBundleInstance(
             TaskPageFragment.Companion.TYPE.SEARCH_TO_DO.name,
             taskLsId[index],

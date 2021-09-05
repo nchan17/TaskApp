@@ -3,15 +3,12 @@ package com.taskapp.presentation.searchpage
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.Navigation
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
-import com.taskapp.R
 import com.taskapp.domain.Review
 import com.taskapp.domain.Status
 import com.taskapp.domain.TaskOffer

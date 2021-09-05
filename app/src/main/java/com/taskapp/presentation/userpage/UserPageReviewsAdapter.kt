@@ -48,11 +48,7 @@ class UserPageReviewsAdapter(
                 item.commentTextView.text = reviewPageData.comment
                 item.commentTextView.visibility = VISIBLE
             }
-            if (reviewPageData.rating == null) {
-                item.ratingBar.rating = 0F
-            } else {
-                item.ratingBar.rating = reviewPageData.rating!!
-            }
+            item.ratingBar.rating = reviewPageData.rating
             if (reviewPageData.photo == null) {
                 item.profilePictureImageView.setImageResource(R.drawable.profile_photo)
             } else {

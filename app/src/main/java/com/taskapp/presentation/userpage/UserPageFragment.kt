@@ -147,10 +147,11 @@ class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInter
     private fun showUserData(user: User?) {
         if (user != null) {
             binding.fullNameTextView.text = user.fullName
-            binding.emailTextView.text = "Email: " + user.email
-            binding.phoneNumberTextView.text = "Phone: " + user.phone
+            binding.emailTextView.text = getString(R.string.user_page_email_text, user.email)
+            binding.phoneNumberTextView.text = getString(R.string.user_page_phone_text, user.phone)
             binding.ratingBar.rating = viewModel.userRating
-            binding.numReviewsTextView.text = viewModel.numRaters.toString() + " Reviews"
+            binding.numReviewsTextView.text =
+                getString(R.string.user_page_review_text, viewModel.numRaters)
         }
     }
 

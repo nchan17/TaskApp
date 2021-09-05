@@ -64,16 +64,16 @@ class TaskPageFragment : Fragment() {
             }
             TYPE.MY_CREATED_IN_PROGRESS.name -> {
                 binding.infoTextView.visibility = VISIBLE
-                binding.infoTextView.text = "This user is working on your Task!"
+                binding.infoTextView.text = getString(R.string.task_page_user_is_working)
             }
             TYPE.ARCHIVE.name -> {
                 binding.infoTextView.visibility = VISIBLE
-                binding.infoTextView.text = "You finished this user's Task!"
+                binding.infoTextView.text = getString(R.string.task_page_you_finished_task)
                 viewModel.checkIfAlreadyReviewed(taskId, userId)
             }
             TYPE.ARCHIVE_MY_CREATED.name -> {
                 binding.infoTextView.visibility = VISIBLE
-                binding.infoTextView.text = "This user finished your Task!"
+                binding.infoTextView.text = getString(R.string.task_page_user_finished_task)
                 viewModel.checkIfAlreadyReviewed(taskId, userId)
             }
         }
@@ -169,10 +169,10 @@ class TaskPageFragment : Fragment() {
                 if (data != null) {
                     showUserData(data)
                 } else {
-                    showToast("error no such user")
+                    showToast(getString(R.string.general_error))
                 }
             } else {
-                showToast("error getting user data")
+                showToast(getString(R.string.general_error))
             }
             binding.progressBar.visibility = GONE
         })
@@ -191,7 +191,7 @@ class TaskPageFragment : Fragment() {
                 binding.offerButton.visibility = VISIBLE
             } else {
                 binding.infoTextView.visibility = VISIBLE
-                binding.infoTextView.text = "You've already sent an offer!"
+                binding.infoTextView.text = getString(R.string.task_page_you_sent_offer)
             }
         })
 

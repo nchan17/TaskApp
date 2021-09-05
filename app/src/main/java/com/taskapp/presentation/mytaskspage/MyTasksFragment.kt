@@ -7,7 +7,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -18,6 +17,10 @@ import com.taskapp.databinding.FragmentMyTasksBinding
 import com.taskapp.domain.Status
 import com.taskapp.domain.Task
 import com.taskapp.presentation.searchpage.TaskPageFragment
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface {
     private var _binding: FragmentMyTasksBinding? = null
@@ -101,9 +104,13 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
             }
         }
 
-        val date = currTask.creation_data?.date.toString() + "-" +
-                currTask.creation_data?.month.toString() + "-" +
-                currTask.creation_data?.year?.plus(1900).toString()
+        var date = ""
+        currTask.creation_data?.let {
+            val mCalendar = Calendar.getInstance()
+            mCalendar.time = it
+            date =
+                SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(mCalendar.time)
+        }
 
         when (groupPosition) {
             0 -> {
@@ -178,7 +185,4 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
         }
     }
 
-    private fun showToast(str: String) {
-        Toast.makeText(context, str, Toast.LENGTH_LONG).show()
-    }
 }

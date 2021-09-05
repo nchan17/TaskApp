@@ -7,6 +7,10 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
 import com.taskapp.R
 import com.taskapp.domain.Task
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class MyTasksRecyclerAdapter(
     private var listGroup: ArrayList<String>,
@@ -73,9 +77,13 @@ class MyTasksRecyclerAdapter(
         )
         val sChild: Task = getChild(groupPosition, childPosition) as Task
 
-        val date = sChild.creation_data?.date.toString() + "-" +
-                sChild.creation_data?.month.toString() + "-" +
-                sChild.creation_data?.year?.plus(1900).toString()
+        var date = ""
+        sChild.creation_data?.let {
+            val mCalendar = Calendar.getInstance()
+            mCalendar.time = it
+            date =
+                SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(mCalendar.time)
+        }
 
         val title: TextView = view.findViewById(R.id.title_textView)
         val desc: TextView = view.findViewById(R.id.description_text_view)

@@ -36,5 +36,22 @@
     <string name="create_task_action_button_text">Create Task</string>
     <string name="create_task_success_text">Task was created</string>
 
+    <!--    User Page Flow-->
+    <string name="user_page_email_text">Email: %1$s</string>
+    <string name="user_page_phone_text">Phone: %1$s</string>
+    <string name="user_page_review_text">%1$d Reviews</string>
+    <string name="user_page_log_out_button_text">Log Out</string>
+    <string name="user_page_reviews_header_text">Reviews:</string>
+
+    <!--    Search Page Flow-->
+    <string name="task_page_user_is_working">This user is working on your Task!</string>
+    <string name="task_page_you_finished_task">You finished this user\'s Task!</string>
+    <string name="task_page_user_finished_task">This user finished your Task!</string>
+    <string name="task_page_you_sent_offer">You\'ve already sent an offer!</string>
+    <string name="task_page_offer_button_text">Offer To Do The Task</string>
+    <string name="search_task_adapter_gel_text">%1$s ₾</string>
+    <string name="task_page_review_button_text">Review Tasker!</string>
+    <string name="task_page_finish_button_text">Finish!</string>
+
 
 </resources>
