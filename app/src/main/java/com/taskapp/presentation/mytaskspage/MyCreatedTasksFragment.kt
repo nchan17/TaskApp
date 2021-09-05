@@ -1,5 +1,6 @@
 package com.taskapp.presentation.mytaskspage
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -63,7 +64,23 @@ class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInter
     }
 
     private fun setupClickListeners() {
-//        TODO("Not yet implemented")
+        binding.deleteButton.setOnClickListener {
+            showDeleteConfirmationDialog()
+        }
+    }
+
+    private fun showDeleteConfirmationDialog() {
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage(getString(R.string.my_created_tasks_page_delete_confirmation_text))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.general_yes_text)) { _, _ ->
+                viewModel.deleteTask(taskId)
+            }
+            .setNegativeButton(getString(R.string.general_no_text)) { dialog, _ ->
+                dialog.dismiss()
+            }
+        val alert = builder.create()
+        alert.show()
     }
 
     private fun setupObservers(view: View) {
@@ -82,6 +99,15 @@ class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInter
         viewModel.isAcceptOfferSuccessful.observe(viewLifecycleOwner, { result ->
             if (result) {
                 showToast("Offer was accepted!")
+                Navigation.findNavController(view).popBackStack()
+            } else {
+                showToast(getString(R.string.general_error))
+            }
+        })
+
+        viewModel.isDeleteTaskSuccessful.observe(viewLifecycleOwner, { result ->
+            if (result) {
+                showToast("Task successfully deleted!")
                 Navigation.findNavController(view).popBackStack()
             } else {
                 showToast(getString(R.string.general_error))

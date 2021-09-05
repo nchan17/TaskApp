@@ -58,8 +58,11 @@
     <string name="task_page_review_button_text">შეაფასეთ თასქერი!</string>
     <string name="task_page_finish_button_text">დამთავრება!</string>
     <string name="task_page_withdraw_offer_button_text">შეთავაზების გაუქმება</string>
+    <string name="my_created_tasks_page_delete_confirmation_text">დარწმუნებული ხართ, რომ გსურთ თასქის წაშლა?</string>
 
     <string name="language_button_text">ენა</string>
+    <string name="general_yes_text">დიახ</string>
+    <string name="general_no_text">არა</string>
 
 
 </resources>

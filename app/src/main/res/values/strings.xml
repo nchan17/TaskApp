@@ -58,8 +58,11 @@
     <string name="task_page_review_button_text">Review Tasker!</string>
     <string name="task_page_finish_button_text">Finish!</string>
     <string name="task_page_withdraw_offer_button_text">Withdraw Offer</string>
+    <string name="my_created_tasks_page_delete_confirmation_text">Are you sure you want to Delete this Task?</string>
 
     <string name="language_button_text">Lan</string>
+    <string name="general_yes_text">Yes</string>
+    <string name="general_no_text">No</string>
 
 
 

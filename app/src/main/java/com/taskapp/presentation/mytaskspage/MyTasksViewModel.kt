@@ -35,6 +35,10 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
         MutableLiveData<Boolean>()
     }
 
+    val isDeleteTaskSuccessful: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
     var taskOfferPageDataLs: ArrayList<TaskOfferPageData> = arrayListOf()
 
     fun getAllMyTasks(userId: String) {
@@ -220,5 +224,34 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
             isAcceptOfferSuccessful.postValue(false)
         }
 
+    }
+
+    fun deleteTask(taskId: String) {
+        val firebaseInstance = FirebaseFirestore.getInstance()
+        val batch = firebaseInstance.batch()
+        val deleteFromTasks = firebaseInstance.collection("tasks").document(taskId)
+        deleteFromTasks.get().addOnSuccessListener { result ->
+            batch.delete(result.reference).commit()
+            deleteOffersForTask(taskId)
+        }.addOnFailureListener {
+            isDeleteTaskSuccessful.postValue(false)
+        }
+    }
+
+    private fun deleteOffersForTask(taskId: String) {
+        val firebaseInstance = FirebaseFirestore.getInstance()
+        val batch = firebaseInstance.batch()
+        val deleteFromOffers =
+            firebaseInstance.collection("task_offers")
+                .whereEqualTo("taskId", taskId)
+        deleteFromOffers.get().addOnSuccessListener { result ->
+            result.documents.forEach {
+                batch.delete(it.reference)
+            }
+            batch.commit()
+            isDeleteTaskSuccessful.postValue(true)
+        }.addOnFailureListener {
+            isDeleteTaskSuccessful.postValue(true)
+        }
     }
 }
