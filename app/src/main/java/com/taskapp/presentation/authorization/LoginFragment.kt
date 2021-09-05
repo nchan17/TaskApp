@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.taskapp.databinding.FragmentLoginBinding
 import com.taskapp.R
+import java.util.*
 
 
 class LoginFragment : Fragment(), View.OnClickListener {
@@ -36,6 +38,10 @@ class LoginFragment : Fragment(), View.OnClickListener {
         binding.registerTextView.setOnClickListener(this)
         binding.logInButton.setOnClickListener(this)
         binding.forgotPasswTextView.setOnClickListener(this)
+        binding.languageButton.setOnClickListener {
+            switchLanguage()
+            reloadFragment(view)
+        }
     }
 
     override fun onClick(v: View?) {
@@ -54,6 +60,28 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    private fun switchLanguage() {
+        if (resources.configuration.locale.language.toString() == "en") {
+            setLocale("ka")
+        } else {
+            setLocale("en")
+        }
+    }
+
+    private fun setLocale(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        resources.configuration.setLocale(locale)
+        resources.updateConfiguration(resources.configuration, resources.displayMetrics)
+    }
+
+    private fun reloadFragment(view: View) {
+        val navController = Navigation.findNavController(view)
+        val id = navController.currentDestination?.id
+        navController.popBackStack(id!!, true)
+        navController.navigate(id)
     }
 
     private fun userLogin() {

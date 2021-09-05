@@ -49,14 +49,16 @@
     <string name="user_page_reviews_header_text">შეფასებები:</string>
 
     <!--    Search Page Flow-->
-    <string name="task_page_user_is_working">იუზერი მოცემულ თასქზე მუშაობს!</string>
+    <string name="task_page_user_is_working">მომხმარებელი მოცემულ თასქზე მუშაობს!</string>
     <string name="task_page_you_finished_task">შენ უკვე დაამთავრე ამ თასქზე მუშაობა!</string>
-    <string name="task_page_user_finished_task">იუზერმა დაამთავრა მოცემულ თასქზე მუშაობა!</string>
+    <string name="task_page_user_finished_task">მომხმარებელმა დაამთავრა მოცემულ თასქზე მუშაობა!</string>
     <string name="task_page_you_sent_offer">მოთხოვნა უკვე გაგზავნილია!</string>
     <string name="task_page_offer_button_text">შესთავაზეთ თასქის გაკეთება</string>
     <string name="search_task_adapter_gel_text">%1$s ₾</string>
     <string name="task_page_review_button_text">შეაფასეთ თასქერი!</string>
     <string name="task_page_finish_button_text">დამთავრება!</string>
+
+    <string name="language_button_text">ენა</string>
 
 
 </resources>

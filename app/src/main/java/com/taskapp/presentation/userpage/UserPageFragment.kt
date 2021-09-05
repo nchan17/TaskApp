@@ -14,11 +14,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.taskapp.domain.User
 import com.taskapp.databinding.FragmentUserPageBinding
 import android.content.Intent
+import android.content.res.Configuration
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.taskapp.R
+import java.util.*
 
 
 class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInterface {
@@ -51,13 +54,15 @@ class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInter
 
         if (userId == mAuth.uid!!) {
             binding.logoutButton.visibility = VISIBLE
+            binding.languageButton.visibility = VISIBLE
         } else {
             binding.logoutButton.visibility = GONE
+            binding.languageButton.visibility = GONE
         }
         val linearLayoutManager = LinearLayoutManager(context)
         binding.recyclerView.layoutManager = linearLayoutManager
 
-        addListeners()
+        addListeners(view)
         viewModel.getAllUserData(userId)
         viewModel.getUserReviews(userId)
         addObservers()
@@ -68,7 +73,7 @@ class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInter
         listener = this
     }
 
-    private fun addListeners() {
+    private fun addListeners(view: View) {
         val registerForActivityResult =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -87,8 +92,34 @@ class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInter
         binding.logoutButton.setOnClickListener {
             logOut()
         }
+
+        binding.languageButton.setOnClickListener {
+            switchLanguage()
+            reloadFragment(view)
+        }
     }
 
+    private fun switchLanguage() {
+        if (resources.configuration.locale.language.toString() == "en") {
+            setLocale("ka")
+        } else {
+            setLocale("en")
+        }
+    }
+
+    private fun setLocale(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        resources.configuration.setLocale(locale)
+        resources.updateConfiguration(resources.configuration, resources.displayMetrics)
+    }
+
+    private fun reloadFragment(view: View) {
+        val navController = Navigation.findNavController(view)
+        val id = navController.currentDestination?.id
+        navController.popBackStack(id!!, true)
+        navController.navigate(id)
+    }
 
     private fun addObservers() {
         viewModel.getUserDataDone.observe(viewLifecycleOwner, { result ->

@@ -11,6 +11,24 @@
         android:layout_height="wrap_content"
         tools:context=".presentation.userpage.UserPageFragment">
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/language_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:minWidth="0dp"
+            android:text="@string/language_button_text"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_baseline_language_24"
+            app:iconPadding="0dp"
+            app:iconTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginEnd="8dp" />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profile_picture_image_view"
             android:layout_width="72dp"
@@ -58,14 +76,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
-            tools:text="Tasks: 12"
             android:textColor="?attr/colorPrimary"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/rating_bar"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider2" />
+            app:layout_constraintTop_toBottomOf="@id/divider2"
+            tools:text="Tasks: 12" />
 
         <RatingBar
             android:id="@+id/rating_bar"
