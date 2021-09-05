@@ -3,11 +3,10 @@ package com.taskapp.presentation.searchpage
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.taskapp.R
 import com.taskapp.domain.Task
 import com.taskapp.databinding.ItemSearchTaskCardBinding
-import java.text.SimpleDateFormat
-import java.util.*
+import com.taskapp.utils.DateTimeUtil
+import com.taskapp.utils.PriceUtil
 import kotlin.collections.ArrayList
 
 class SearchTaskRecyclerAdapter(
@@ -33,7 +32,7 @@ class SearchTaskRecyclerAdapter(
         )
     }
 
-    fun setNewTaskList(taskList: ArrayList<Task>){
+    fun setNewTaskList(taskList: ArrayList<Task>) {
         this.taskList = taskList
         notifyDataSetChanged()
     }
@@ -43,22 +42,10 @@ class SearchTaskRecyclerAdapter(
     inner class ViewHolder(private var item: ItemSearchTaskCardBinding) :
         RecyclerView.ViewHolder(item.root) {
         fun bind(task: Task) {
-            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-            task.creation_data?.let {
-                val mCalendar = Calendar.getInstance()
-                mCalendar.time = it
-                val date =
-                    SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(mCalendar.time)
-                item.dateTextView.text = date
-            }
-
+            item.dateTextView.text = DateTimeUtil.getDateToString(task.creation_data)
             item.titleTextView.text = task.title
             item.descriptionTextView.text = task.description
-            item.priceTextView.text =
-                itemView.context.getString(
-                    R.string.search_task_adapter_gel_text,
-                    task.price.toString()
-                )
+            item.priceTextView.text = PriceUtil.getPrice(task.price)
             itemView.setOnClickListener {
                 listener.onItemClick(layoutPosition)
             }

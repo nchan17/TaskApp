@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.taskapp.R
 import com.taskapp.databinding.FragmentSearchPageBinding
-import java.text.SimpleDateFormat
-import java.util.*
+import com.taskapp.utils.DateTimeUtil
+import com.taskapp.utils.PriceUtil
 
 class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClickInterface {
     private var _binding: FragmentSearchPageBinding? = null
@@ -96,22 +96,16 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
     }
 
     override fun onItemClick(index: Int) {
-        var date = ""
-        viewModel.filteredTasksLs[index].creation_data?.let {
-            val mCalendar = Calendar.getInstance()
-            mCalendar.time = it
-            date =
-                SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(mCalendar.time)
-        }
         val tasks = viewModel.filteredTasksLs[index]
+
         val bundle = TaskPageFragment.newBundleInstance(
             TaskPageFragment.Companion.TYPE.SEARCH_TO_DO.name,
             tasks.id!!,
             tasks.employer_id,
             tasks.title,
             tasks.description,
-            tasks.price.toString() + " ₾",
-            date,
+            PriceUtil.getPrice(tasks.price),
+            DateTimeUtil.getDateToString(tasks.creation_data),
             tasks.status.name
         )
 

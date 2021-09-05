@@ -17,8 +17,8 @@ import com.taskapp.databinding.FragmentMyTasksBinding
 import com.taskapp.domain.Status
 import com.taskapp.domain.Task
 import com.taskapp.presentation.searchpage.TaskPageFragment
-import java.text.SimpleDateFormat
-import java.util.*
+import com.taskapp.utils.DateTimeUtil
+import com.taskapp.utils.PriceUtil
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -109,13 +109,8 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
             }
         }
 
-        var date = ""
-        currTask.creation_data?.let {
-            val mCalendar = Calendar.getInstance()
-            mCalendar.time = it
-            date =
-                SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(mCalendar.time)
-        }
+        val date = DateTimeUtil.getDateToString(currTask.creation_data)
+        val price = PriceUtil.getPrice(currTask.price)
 
         when (groupPosition) {
             0 -> {
@@ -125,7 +120,7 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                     currTask.employee_id,
                     currTask.title,
                     currTask.description,
-                    currTask.price.toString() + " ₾",
+                    price,
                     date,
                     currTask.status.name,
                 )
@@ -138,7 +133,7 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                         currTask.id!!,
                         currTask.title,
                         currTask.description,
-                        currTask.price.toString() + " ₾",
+                        price,
                         date,
                         currTask.status.name
                     )
@@ -151,7 +146,7 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                         currTask.employee_id,
                         currTask.title,
                         currTask.description,
-                        currTask.price.toString() + " ₾",
+                        price,
                         date,
                         currTask.status.name
                     )
@@ -166,7 +161,7 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                     currTask.employer_id,
                     currTask.title,
                     currTask.description,
-                    currTask.price.toString() + " ₾",
+                    price,
                     date,
                     currTask.status.name,
                 )
@@ -180,7 +175,7 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                     currTask.employee_id,
                     currTask.title,
                     currTask.description,
-                    currTask.price.toString() + " ₾",
+                    price,
                     date,
                     currTask.status.name,
                 )

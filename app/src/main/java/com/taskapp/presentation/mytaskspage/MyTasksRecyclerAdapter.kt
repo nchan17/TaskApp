@@ -7,8 +7,8 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
 import com.taskapp.R
 import com.taskapp.domain.Task
-import java.text.SimpleDateFormat
-import java.util.*
+import com.taskapp.utils.DateTimeUtil
+import com.taskapp.utils.PriceUtil
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -77,13 +77,7 @@ class MyTasksRecyclerAdapter(
         )
         val sChild: Task = getChild(groupPosition, childPosition) as Task
 
-        var date = ""
-        sChild.creation_data?.let {
-            val mCalendar = Calendar.getInstance()
-            mCalendar.time = it
-            date =
-                SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(mCalendar.time)
-        }
+        val date = DateTimeUtil.getDateToString(sChild.creation_data)
 
         val title: TextView = view.findViewById(R.id.title_textView)
         val desc: TextView = view.findViewById(R.id.description_text_view)
@@ -92,7 +86,7 @@ class MyTasksRecyclerAdapter(
 
         title.text = sChild.title
         desc.text = sChild.description
-        price.text = sChild.price.toString() + " ₾"
+        price.text = PriceUtil.getPrice(sChild.price)
         time.text = date
 
         view.setOnClickListener {
