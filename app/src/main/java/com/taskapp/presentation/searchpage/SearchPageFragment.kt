@@ -6,28 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import com.taskapp.R
-import com.taskapp.domain.Task
 import com.taskapp.databinding.FragmentSearchPageBinding
-import com.taskapp.domain.Status
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClickInterface {
     private var _binding: FragmentSearchPageBinding? = null
     private val binding get() = _binding!!
 
+    private val viewModel: SearchPageViewModel by viewModels()
     private lateinit var mAuth: FirebaseAuth
     private lateinit var adapter: SearchTaskRecyclerAdapter
-    private var tasks: ArrayList<Task> = arrayListOf()
-    private var taskLsId: ArrayList<String> = arrayListOf()
+
     private lateinit var listener: SearchTaskRecyclerAdapter.SearchTaskClickInterface
 
     override fun onCreateView(
@@ -42,39 +39,46 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mAuth = FirebaseAuth.getInstance()
-
         val linearLayoutManager = LinearLayoutManager(context)
         binding.recyclerView.layoutManager = linearLayoutManager
-
         binding.progressBar.visibility = View.VISIBLE
-        val ref =
-            mAuth.currentUser?.let {
-                FirebaseFirestore.getInstance()
-                    .collection("tasks")
-                    .whereNotEqualTo("employer_id", it.uid)
-            }
-        ref?.get()
-            ?.addOnSuccessListener { documents ->
-                taskLsId.clear()
-                tasks.clear()
-                for (document in documents) {
-                    val currTask = document.toObject() as Task
-                    if (currTask.status == Status.TO_DO) {
-                        taskLsId.add(document.id)
-                        tasks.add(document.toObject())
-                    }
+
+        setListeners()
+        viewModel.searchTasks(mAuth.uid!!)
+        addObservers()
+    }
+
+    private fun setListeners() {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            android.widget.SearchView.OnQueryTextListener {
+
+            override fun onQueryTextChange(qString: String): Boolean {
+                if (viewModel.filterTasksByString(qString)) {
+                    adapter.setNewTaskList(viewModel.filteredTasksLs)
                 }
+                return true
+            }
+
+            override fun onQueryTextSubmit(qString: String): Boolean {
+                return true
+            }
+        })
+    }
+
+
+    private fun addObservers() {
+        viewModel.isSearchTasksSuccessful.observe(viewLifecycleOwner, { result ->
+            if (result) {
                 adapter = SearchTaskRecyclerAdapter(
-                    tasks,
+                    viewModel.searchTasksLs,
                     listener
                 )
                 binding.recyclerView.adapter = adapter
-                binding.progressBar.visibility = View.GONE
-            }
-            ?.addOnFailureListener {
-                binding.progressBar.visibility = View.GONE
+            } else {
                 showToast(getString(R.string.general_error))
             }
+            binding.progressBar.visibility = View.GONE
+        })
     }
 
     override fun onAttach(context: Context) {
@@ -93,21 +97,22 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
 
     override fun onItemClick(index: Int) {
         var date = ""
-        tasks[index].creation_data?.let {
+        viewModel.filteredTasksLs[index].creation_data?.let {
             val mCalendar = Calendar.getInstance()
             mCalendar.time = it
             date =
                 SimpleDateFormat("d MMM yyyy", Locale.getDefault()).format(mCalendar.time)
         }
+        val tasks = viewModel.filteredTasksLs[index]
         val bundle = TaskPageFragment.newBundleInstance(
             TaskPageFragment.Companion.TYPE.SEARCH_TO_DO.name,
-            taskLsId[index],
-            tasks[index].employer_id,
-            tasks[index].title,
-            tasks[index].description,
-            tasks[index].price.toString() + " ₾",
+            tasks.id!!,
+            tasks.employer_id,
+            tasks.title,
+            tasks.description,
+            tasks.price.toString() + " ₾",
             date,
-            tasks[index].status.name
+            tasks.status.name
         )
 
         view?.findNavController()

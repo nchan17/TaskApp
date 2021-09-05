@@ -9,11 +9,10 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
-import com.taskapp.domain.Review
-import com.taskapp.domain.Status
-import com.taskapp.domain.TaskOffer
-import com.taskapp.domain.User
+import com.taskapp.domain.*
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
     private var storage: FirebaseStorage = FirebaseStorage.getInstance()
@@ -49,7 +48,15 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
         MutableLiveData<Boolean>()
     }
 
+    val isSearchTasksSuccessful: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
     var userRating: Float = 0F
+
+    var searchTasksLs: ArrayList<Task> = arrayListOf()
+
+    val filteredTasksLs: ArrayList<Task> = arrayListOf()
 
     fun getAllUserData(userId: String) {
         val storageRef = storage.reference.child(userId)
@@ -168,6 +175,44 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
                 isSendReviewSuccessful.postValue(false)
             }
         }
+    }
+
+    fun searchTasks(excludeUserId: String) {
+        val ref =
+            FirebaseFirestore.getInstance()
+                .collection("tasks")
+                .whereNotEqualTo("employer_id", excludeUserId)
+
+        ref.get()
+            .addOnSuccessListener { documents ->
+                searchTasksLs.clear()
+                documents.forEachIndexed { _, document ->
+                    val currTask = document.toObject() as Task
+                    if (currTask.status == Status.TO_DO) {
+                        currTask.id = document.id
+                        searchTasksLs.add(currTask)
+                    }
+                }
+                filteredTasksLs.clear()
+                filteredTasksLs.addAll(searchTasksLs)
+                isSearchTasksSuccessful.postValue(true)
+            }
+            .addOnFailureListener {
+                isSearchTasksSuccessful.postValue(false)
+            }
+    }
+
+    fun filterTasksByString(searchStr: String): Boolean {
+        searchStr.lowercase(Locale.getDefault())
+        filteredTasksLs.clear()
+        for (task in searchTasksLs) {
+            if (task.title?.lowercase(Locale.getDefault())?.contains(searchStr) == true ||
+                task.description?.lowercase(Locale.getDefault())?.contains(searchStr) == true
+            ) {
+                filteredTasksLs.add(task)
+            }
+        }
+        return true
     }
 
 }

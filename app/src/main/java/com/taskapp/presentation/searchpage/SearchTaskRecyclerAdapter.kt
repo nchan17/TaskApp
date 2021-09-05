@@ -33,6 +33,11 @@ class SearchTaskRecyclerAdapter(
         )
     }
 
+    fun setNewTaskList(taskList: ArrayList<Task>){
+        this.taskList = taskList
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int = taskList.size
 
     inner class ViewHolder(private var item: ItemSearchTaskCardBinding) :
