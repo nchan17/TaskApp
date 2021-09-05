@@ -32,6 +32,10 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
         MutableLiveData<Boolean>()
     }
 
+    val withdrawOfferIsSuccessful: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
     val offerAlreadySent: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
@@ -115,6 +119,24 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
             } else {
                 sendOfferIsSuccessful.postValue(false)
             }
+        }
+    }
+
+    fun withdrawOffer(userId: String, taskId: String) {
+        val firebaseInstance = FirebaseFirestore.getInstance()
+        val batch = firebaseInstance.batch()
+        val ref =
+            firebaseInstance.collection("task_offers")
+                .whereEqualTo("employeeId", userId)
+                .whereEqualTo("taskId", taskId)
+        ref.get().addOnSuccessListener { result ->
+            result.documents.forEach {
+                batch.delete(it.reference)
+            }
+            batch.commit()
+            withdrawOfferIsSuccessful.postValue(true)
+        }.addOnFailureListener {
+            withdrawOfferIsSuccessful.postValue(false)
         }
     }
 

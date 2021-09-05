@@ -57,6 +57,7 @@
     <string name="search_task_adapter_gel_text">%1$s ₾</string>
     <string name="task_page_review_button_text">შეაფასეთ თასქერი!</string>
     <string name="task_page_finish_button_text">დამთავრება!</string>
+    <string name="task_page_withdraw_offer_button_text">შეთავაზების გაუქმება</string>
 
     <string name="language_button_text">ენა</string>
 

@@ -138,6 +138,9 @@ class TaskPageFragment : Fragment() {
         binding.offerButton.setOnClickListener {
             viewModel.sendOffer(mAuth.uid!!, taskId)
         }
+        binding.withdrawOfferButton.setOnClickListener {
+            viewModel.withdrawOffer(mAuth.uid!!, taskId)
+        }
         binding.doneButton.setOnClickListener {
             viewModel.sendFinished(taskId)
         }
@@ -186,12 +189,20 @@ class TaskPageFragment : Fragment() {
             }
         })
 
+        viewModel.withdrawOfferIsSuccessful.observe(viewLifecycleOwner, { result ->
+            if (result) {
+                showToast("Offer was withdrawn")
+                Navigation.findNavController(view).popBackStack()
+            } else {
+                showToast(getString(R.string.general_error))
+            }
+        })
+
         viewModel.offerAlreadySent.observe(viewLifecycleOwner, { result ->
             if (!result) {
                 binding.offerButton.visibility = VISIBLE
             } else {
-                binding.infoTextView.visibility = VISIBLE
-                binding.infoTextView.text = getString(R.string.task_page_you_sent_offer)
+                binding.withdrawOfferButton.visibility = VISIBLE
             }
         })
 

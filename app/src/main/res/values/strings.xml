@@ -57,8 +57,10 @@
     <string name="search_task_adapter_gel_text">%1$s ₾</string>
     <string name="task_page_review_button_text">Review Tasker!</string>
     <string name="task_page_finish_button_text">Finish!</string>
+    <string name="task_page_withdraw_offer_button_text">Withdraw Offer</string>
 
     <string name="language_button_text">Lan</string>
+
 
 
 </resources>
