@@ -1,10 +1,8 @@
 package com.taskapp.presentation.searchpage
 
-import android.R.attr.*
 import android.app.AlertDialog
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -21,7 +19,9 @@ import com.taskapp.R
 import com.taskapp.domain.User
 import com.taskapp.databinding.FragmentTaskPageBinding
 import android.widget.LinearLayout
+import androidx.navigation.findNavController
 import com.taskapp.domain.Review
+import com.taskapp.presentation.userpage.UserPageFragment
 import java.util.*
 
 
@@ -143,6 +143,11 @@ class TaskPageFragment : Fragment() {
         }
         binding.reviewButton.setOnClickListener {
             showReviewDialog()
+        }
+        binding.userConstraintLayout.setOnClickListener {
+            val bundle = UserPageFragment.newBundleInstance(userId)
+            view?.findNavController()
+                ?.navigate(R.id.action_taskPageFragment_to_userPageFragment2, bundle)
         }
     }
 

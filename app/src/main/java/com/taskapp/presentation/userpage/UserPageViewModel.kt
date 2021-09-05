@@ -42,6 +42,7 @@ class UserPageViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     var userRating: Float = 0F
+    var numRaters: Int = 0
 
     fun getAllUserData(userId: String) {
         val storageRef = storage.reference.child(userId)
@@ -67,17 +68,16 @@ class UserPageViewModel(app: Application) : AndroidViewModel(app) {
             if (taskGetUserRating.isSuccessful) {
                 val documents = taskGetUserRating.result
                 if (documents != null) {
-                    var size = 0
                     var sumOfRating = 0F
                     for (document in documents) {
                         val currReview = document.toObject() as Review
                         currReview.num_stars?.let {
                             sumOfRating += currReview.num_stars
-                            size++
+                            numRaters++
                         }
                     }
-                    if (size != 0) {
-                        userRating = sumOfRating / size
+                    if (numRaters != 0) {
+                        userRating = sumOfRating / numRaters
                     }
                 }
             }

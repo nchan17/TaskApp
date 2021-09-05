@@ -150,6 +150,7 @@ class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInter
             binding.emailTextView.text = "Email: " + user.email
             binding.phoneNumberTextView.text = "Phone: " + user.phone
             binding.ratingBar.rating = viewModel.userRating
+            binding.numReviewsTextView.text = viewModel.numRaters.toString() + " Reviews"
         }
     }
 

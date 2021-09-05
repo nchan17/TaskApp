@@ -53,12 +53,12 @@
             app:layout_constraintTop_toBottomOf="@+id/full_name_text_view" />
 
         <TextView
-            android:id="@+id/num_tasks_text_view"
+            android:id="@+id/num_reviews_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
-            android:text="Tasks: 12"
+            tools:text="Tasks: 12"
             android:textColor="?attr/colorPrimary"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -77,11 +77,11 @@
             android:numStars="5"
             android:progressTint="?attr/colorPrimary"
             android:stepSize="0.1"
-            app:layout_constraintBottom_toBottomOf="@+id/num_tasks_text_view"
+            app:layout_constraintBottom_toBottomOf="@+id/num_reviews_text_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/num_tasks_text_view"
-            app:layout_constraintTop_toTopOf="@+id/num_tasks_text_view" />
+            app:layout_constraintStart_toEndOf="@+id/num_reviews_text_view"
+            app:layout_constraintTop_toTopOf="@+id/num_reviews_text_view" />
 
         <View
             android:id="@+id/divider1"
@@ -93,7 +93,7 @@
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/num_tasks_text_view" />
+            app:layout_constraintTop_toBottomOf="@+id/num_reviews_text_view" />
 
         <LinearLayout
             android:id="@+id/user_info_layout"
