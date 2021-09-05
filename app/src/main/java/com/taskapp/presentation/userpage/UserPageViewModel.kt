@@ -14,7 +14,6 @@ import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
 import com.taskapp.domain.Review
 import com.taskapp.domain.ReviewPageData
-import com.taskapp.domain.TaskOffer
 import com.taskapp.domain.User
 import java.io.File
 
@@ -42,6 +41,8 @@ class UserPageViewModel(app: Application) : AndroidViewModel(app) {
         MutableLiveData<Boolean>()
     }
 
+    var userRating: Float = 0F
+
     fun getAllUserData(userId: String) {
         val storageRef = storage.reference.child(userId)
         val localFile: File = File.createTempFile("profile", "jpeg")
@@ -53,9 +54,32 @@ class UserPageViewModel(app: Application) : AndroidViewModel(app) {
             .document(userId)
             .get()
 
-        Tasks.whenAll(taskGetUserTask, profilePicTask).addOnCompleteListener {
+        val taskGetUserRating = FirebaseFirestore
+            .getInstance()
+            .collection("ratings")
+            .whereEqualTo("reviewee_id", userId)
+            .get()
+
+        Tasks.whenAll(taskGetUserTask, profilePicTask, taskGetUserRating).addOnCompleteListener {
             if (profilePicTask.isSuccessful) {
                 profilePicLiveData.postValue(BitmapFactory.decodeFile(localFile.absolutePath))
+            }
+            if (taskGetUserRating.isSuccessful) {
+                val documents = taskGetUserRating.result
+                if (documents != null) {
+                    var size = 0
+                    var sumOfRating = 0F
+                    for (document in documents) {
+                        val currReview = document.toObject() as Review
+                        currReview.num_stars?.let {
+                            sumOfRating += currReview.num_stars
+                            size++
+                        }
+                    }
+                    if (size != 0) {
+                        userRating = sumOfRating / size
+                    }
+                }
             }
             if (taskGetUserTask.isSuccessful) {
                 userLiveData.postValue(taskGetUserTask.result?.toObject<User>())
@@ -63,6 +87,7 @@ class UserPageViewModel(app: Application) : AndroidViewModel(app) {
             } else {
                 getUserDataDone.postValue(false)
             }
+
         }
     }
 
@@ -106,7 +131,7 @@ class UserPageViewModel(app: Application) : AndroidViewModel(app) {
                             ReviewPageData(
                                 reviewersList[index].reviewer_id!!,
                                 user.fullName!!,
-                                reviewersList[index].num_stars,
+                                reviewersList[index].num_stars ?: 0F,
                                 reviewersList[index].comment,
                             )
                         )

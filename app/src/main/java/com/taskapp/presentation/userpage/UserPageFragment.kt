@@ -58,7 +58,6 @@ class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInter
         binding.recyclerView.layoutManager = linearLayoutManager
 
         addListeners()
-        binding.ratingBar.rating = 4.5F
         viewModel.getAllUserData(userId)
         viewModel.getUserReviews(userId)
         addObservers()
@@ -150,6 +149,7 @@ class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInter
             binding.fullNameTextView.text = user.fullName
             binding.emailTextView.text = "Email: " + user.email
             binding.phoneNumberTextView.text = "Phone: " + user.phone
+            binding.ratingBar.rating = viewModel.userRating
         }
     }
 

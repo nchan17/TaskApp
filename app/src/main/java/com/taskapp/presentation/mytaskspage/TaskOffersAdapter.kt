@@ -1,16 +1,15 @@
 package com.taskapp.presentation.mytaskspage
 
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.taskapp.R
 import com.taskapp.databinding.ItemOfferUserBinding
-import com.taskapp.domain.User
+import com.taskapp.domain.TaskOfferPageData
 
 
 class TaskOffersAdapter(
-    private var userList: ArrayList<User>,
-    private var userPicList: ArrayList<Bitmap>,
+    private var taskOfferPageDataLs: ArrayList<TaskOfferPageData>,
     private var listener: TaskOfferClickInterface
 ) :
     RecyclerView.Adapter<TaskOffersAdapter.ViewHolder>() {
@@ -27,31 +26,30 @@ class TaskOffersAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (position >= userPicList.size) {
-            holder.bind(
-                userList[position], null
-            )
-        } else {
-            holder.bind(
-                userList[position], userPicList[position]
-            )
-        }
+        holder.bind(
+            taskOfferPageDataLs[position]
+        )
 
     }
 
-    override fun getItemCount(): Int = userList.size
+    override fun getItemCount(): Int = taskOfferPageDataLs.size
 
     inner class ViewHolder(private var item: ItemOfferUserBinding) :
         RecyclerView.ViewHolder(item.root) {
-        fun bind(user: User, bitmap: Bitmap?) {
-            item.employerNameTextView.text = user.fullName
+        fun bind(taskOfferPageData: TaskOfferPageData) {
+            item.employerNameTextView.text = taskOfferPageData.userName
             item.userConstraintLayout.setOnClickListener {
                 listener.onUserClick(layoutPosition)
             }
             item.chooseButton.setOnClickListener {
                 listener.onAcceptOfferClick(layoutPosition)
             }
-            bitmap?.let { item.profilePictureImageView.setImageBitmap(it) }
+            if (taskOfferPageData.photo == null) {
+                item.profilePictureImageView.setImageResource(R.drawable.profile_photo)
+            } else {
+                item.profilePictureImageView.setImageBitmap(taskOfferPageData.photo!!)
+            }
+            item.ratingBar.rating = taskOfferPageData.rating
         }
     }
 

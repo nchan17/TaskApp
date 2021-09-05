@@ -15,8 +15,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.taskapp.R
 import com.taskapp.databinding.FragmentMyCreatedTasksBinding
 import com.taskapp.domain.Status
-import com.taskapp.domain.User
-import com.taskapp.presentation.searchpage.TaskPageFragment
 import com.taskapp.presentation.userpage.UserPageFragment
 
 class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInterface {
@@ -72,7 +70,7 @@ class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInter
         viewModel.isGetOffersUserDataSuccessful.observe(viewLifecycleOwner, { result ->
             if (result) {
                 adapter =
-                    TaskOffersAdapter(viewModel.offersUserList, viewModel.profilePicList, listener)
+                    TaskOffersAdapter(viewModel.taskOfferPageDataLs, listener)
                 binding.recyclerView.adapter = adapter
                 binding.progressBar.visibility = View.GONE
             } else {
@@ -136,13 +134,13 @@ class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInter
 
     override fun onUserClick(index: Int) {
         val bundle = UserPageFragment.newBundleInstance(
-            viewModel.offersUserList[index].id!!
+            viewModel.taskOfferPageDataLs[index].userId
         )
         view?.findNavController()
             ?.navigate(R.id.action_myCreatedTasksFragment_to_userPageFragment2, bundle)
     }
 
     override fun onAcceptOfferClick(index: Int) {
-        viewModel.acceptOffer(viewModel.offersUserList[index].id!!, taskId)
+        viewModel.acceptOffer(viewModel.taskOfferPageDataLs[index].userId, taskId)
     }
 }

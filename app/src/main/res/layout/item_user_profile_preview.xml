@@ -41,6 +41,7 @@
         android:layout_height="wrap_content"
         android:isIndicator="true"
         android:numStars="5"
+        android:progressTint="?attr/colorPrimary"
         android:stepSize="0.1"
         app:layout_constraintBottom_toBottomOf="@+id/profile_picture_image_view"
         app:layout_constraintStart_toStartOf="@+id/employer_name_textView"

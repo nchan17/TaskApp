@@ -1,21 +1,17 @@
 package com.taskapp.presentation.mytaskspage
 
 import android.app.Application
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
-import com.taskapp.domain.Status
-import com.taskapp.domain.Task
-import com.taskapp.domain.TaskOffer
-import com.taskapp.domain.User
+import com.taskapp.domain.*
 import java.io.File
 
 class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
@@ -27,8 +23,6 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
     var inProgressAssignedTasks: ArrayList<Task> = arrayListOf()
     var archivedAssignedTasks: ArrayList<Task> = arrayListOf()
 
-    var offersUserList: ArrayList<User> = arrayListOf()
-
     val isGetAllTasksSuccessful: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
@@ -36,15 +30,12 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
     val isGetOffersUserDataSuccessful: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
-    val isGetOffersUserPicsSuccessful: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>()
-    }
 
     val isAcceptOfferSuccessful: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
 
-    val profilePicList: ArrayList<Bitmap> = arrayListOf()
+    var taskOfferPageDataLs: ArrayList<TaskOfferPageData> = arrayListOf()
 
     fun getAllMyTasks(userId: String) {
         val getMyCreatedTask = FirebaseFirestore
@@ -133,12 +124,17 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
 
         Tasks.whenAll(taskList)
             .addOnSuccessListener {
-                offersUserList.clear()
+                taskOfferPageDataLs.clear()
                 taskList.forEachIndexed { index, task ->
                     val user = task.result?.toObject<User>()
                     if (user != null) {
                         user.id = offersList[index]
-                        offersUserList.add(user)
+                        taskOfferPageDataLs.add(
+                            TaskOfferPageData(
+                                offersList[index],
+                                user.fullName!!
+                            )
+                        )
                     }
                 }
                 getAllProfilePictures(offersList)
@@ -154,17 +150,53 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
             val storageRef = storage.reference.child(userId)
             profileDownloadTaskLs.add(storageRef.getFile(localFileLs[index]))
         }
+
         Tasks.whenAll(profileDownloadTaskLs)
-            .addOnSuccessListener {
+            .addOnCompleteListener {
                 profileDownloadTaskLs.forEachIndexed { index, _ ->
-                    profilePicList.add(
+                    taskOfferPageDataLs[index].photo =
                         BitmapFactory.decodeFile(localFileLs[index].absolutePath)
-                    )
                 }
-                isGetOffersUserPicsSuccessful.postValue(true)
-                isGetOffersUserDataSuccessful.postValue(true)
-            }.addOnFailureListener {
-                isGetOffersUserPicsSuccessful.postValue(false)
+                getAllUserRatings(usersList)
+            }
+    }
+
+    private fun getAllUserRatings(usersList: ArrayList<String>) {
+        val taskList: ArrayList<com.google.android.gms.tasks.Task<QuerySnapshot>> = arrayListOf()
+        for (userId in usersList) {
+            val taskGetUserRatingTask = FirebaseFirestore
+                .getInstance()
+                .collection("ratings")
+                .whereEqualTo("reviewee_id", userId)
+                .get()
+            taskList.add(taskGetUserRatingTask)
+        }
+
+        Tasks.whenAll(taskList)
+            .addOnCompleteListener {
+                taskList.forEachIndexed { index, task ->
+                    if (task.isSuccessful) {
+                        val documents = task.result
+                        if (documents != null) {
+                            var size = 0
+                            var sumOfRating = 0F
+                            for (document in documents) {
+                                val currReview = document.toObject() as Review
+                                currReview.num_stars?.let {
+                                    sumOfRating += currReview.num_stars
+                                    size++
+                                }
+                            }
+                            if (size != 0) {
+                                taskOfferPageDataLs[index].rating = sumOfRating / size
+                            } else {
+                                taskOfferPageDataLs[index].rating = 0F
+                            }
+                        }
+                    } else {
+                        taskOfferPageDataLs[index].rating = 0F
+                    }
+                }
                 isGetOffersUserDataSuccessful.postValue(true)
             }
     }

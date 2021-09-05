@@ -80,7 +80,7 @@ class TaskPageFragment : Fragment() {
 
         setUpViews()
         setupClickListeners()
-        userId?.let { viewModel.getAllUserData(it) }
+        userId.let { viewModel.getAllUserData(it) }
         addObservers(view)
     }
 
@@ -157,10 +157,9 @@ class TaskPageFragment : Fragment() {
         viewModel.getUserDataIsSuccessful.observe(viewLifecycleOwner, { result ->
             if (result) {
                 viewModel.profilePicLiveData.value?.let {
-                    binding.profilePictureImageView.setImageBitmap(
-                        it
-                    )
+                    binding.profilePictureImageView.setImageBitmap(it)
                 }
+                binding.ratingBar.rating = viewModel.userRating
                 val data = viewModel.userLiveData.value
                 if (data != null) {
                     showUserData(data)
