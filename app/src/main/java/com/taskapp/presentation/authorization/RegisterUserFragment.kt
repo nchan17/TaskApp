@@ -13,7 +13,6 @@ import androidx.navigation.Navigation
 import com.taskapp.R
 import com.taskapp.domain.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.taskapp.databinding.FragmentRegisterUserBinding
 
 
@@ -39,6 +38,20 @@ class RegisterUserFragment : Fragment(), View.OnClickListener {
         binding.bannerTextView.setOnClickListener(this)
         binding.registerButton.setOnClickListener(this)
         mAuth = FirebaseAuth.getInstance()
+        addObservers()
+    }
+
+    private fun addObservers() {
+        viewModel.isCreateUserSuccessful.observe(viewLifecycleOwner, { result ->
+            if (result) {
+                showToast(getString(R.string.user_was_created_text))
+                binding.progressBar.visibility = GONE
+                view?.let { it1 -> Navigation.findNavController(it1).popBackStack() }
+            } else {
+                showToast(getString(R.string.general_error))
+                binding.progressBar.visibility = GONE
+            }
+        })
     }
 
     override fun onClick(v: View?) {
@@ -57,35 +70,10 @@ class RegisterUserFragment : Fragment(), View.OnClickListener {
         val phone = binding.phoneNumberEditText.editText?.text.toString().trim()
         val fullName = binding.fullNameEditText.editText?.text.toString().trim()
 
-        if (!validateRegisterFields(email, password, phone, fullName)) {
-            return
-        }
-
-        binding.progressBar.visibility = VISIBLE
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val user = User(fullName, phone, email)
-                val ref =
-                    mAuth.currentUser?.let {
-                        FirebaseFirestore.getInstance().collection("users").document(
-                            it.uid
-                        )
-                    }
-                ref?.set(user)?.addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        showToast(getString(R.string.user_was_created_text))
-                        binding.progressBar.visibility = GONE
-                        view?.let { it1 -> Navigation.findNavController(it1).popBackStack() }
-                    } else {
-                        showToast(getString(R.string.general_error))
-                        binding.progressBar.visibility = GONE
-                    }
-                }
-
-            } else {
-                showToast(getString(R.string.general_error))
-                binding.progressBar.visibility = GONE
-            }
+        if (validateRegisterFields(email, password, phone, fullName)) {
+            val user = User(fullName, phone, email)
+            binding.progressBar.visibility = VISIBLE
+            viewModel.registerUser(user, password)
         }
     }
 

@@ -99,15 +99,14 @@ class LoginFragment : Fragment(), View.OnClickListener {
             return
         }
         binding.progressBar.visibility = View.VISIBLE
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-            if (it.isSuccessful) {
+        mAuth.signInWithEmailAndPassword(email, password)
+            .addOnSuccessListener {
                 binding.progressBar.visibility = View.GONE
                 view?.findNavController()?.navigate(R.id.action_loginFragment_to_homePageFragment)
-            } else {
+            }.addOnFailureListener {
                 showToast(getString(R.string.login_fail_error))
                 binding.progressBar.visibility = View.GONE
             }
-        }
     }
 
     private fun showToast(str: String) {

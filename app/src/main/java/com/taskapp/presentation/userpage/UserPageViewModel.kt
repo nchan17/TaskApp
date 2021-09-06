@@ -19,6 +19,7 @@ import java.io.File
 
 class UserPageViewModel(app: Application) : AndroidViewModel(app) {
     private var storage: FirebaseStorage = FirebaseStorage.getInstance()
+    private var mFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     val userLiveData: MutableLiveData<User> by lazy {
         MutableLiveData<User>()
@@ -49,14 +50,12 @@ class UserPageViewModel(app: Application) : AndroidViewModel(app) {
         val localFile: File = File.createTempFile("profile", "jpeg")
 
         val profilePicTask = storageRef.getFile(localFile)
-        val taskGetUserTask = FirebaseFirestore
-            .getInstance()
+        val taskGetUserTask = mFirestore
             .collection("users")
             .document(userId)
             .get()
 
-        val taskGetUserRating = FirebaseFirestore
-            .getInstance()
+        val taskGetUserRating = mFirestore
             .collection("ratings")
             .whereEqualTo("reviewee_id", userId)
             .get()
@@ -94,8 +93,7 @@ class UserPageViewModel(app: Application) : AndroidViewModel(app) {
     fun getUserReviews(userId: String) {
         val reviewsList: ArrayList<Review> = arrayListOf()
 
-        val getReviewersListTask = FirebaseFirestore
-            .getInstance()
+        val getReviewersListTask = mFirestore
             .collection("ratings")
             .whereEqualTo("reviewee_id", userId)
             .get()
@@ -114,8 +112,7 @@ class UserPageViewModel(app: Application) : AndroidViewModel(app) {
     private fun getReviewersUserData(reviewersList: ArrayList<Review>) {
         val taskList: ArrayList<com.google.android.gms.tasks.Task<DocumentSnapshot>> = arrayListOf()
         for (review in reviewersList) {
-            val taskGetUserTask = FirebaseFirestore
-                .getInstance()
+            val taskGetUserTask = mFirestore
                 .collection("users")
                 .document(review.reviewer_id!!)
                 .get()
@@ -169,13 +166,11 @@ class UserPageViewModel(app: Application) : AndroidViewModel(app) {
     fun uploadImageToFirebase(imageUri: Uri?, userId: String) {
         if (imageUri != null) {
             val storageRef = storage.reference.child(userId)
-            storageRef.putFile(imageUri)
-                .addOnSuccessListener {
-                    setProfilePicDone.postValue(true)
-                }
-                .addOnFailureListener {
-                    setProfilePicDone.postValue(false)
-                }
+            storageRef.putFile(imageUri).addOnSuccessListener {
+                setProfilePicDone.postValue(true)
+            }.addOnFailureListener {
+                setProfilePicDone.postValue(false)
+            }
         }
     }
 

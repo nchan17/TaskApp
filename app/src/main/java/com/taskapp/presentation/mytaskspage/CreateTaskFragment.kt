@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.taskapp.R
 import com.taskapp.domain.Task
 import com.taskapp.databinding.FragmentCreateTaskBinding
@@ -20,6 +20,7 @@ class CreateTaskFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var mAuth: FirebaseAuth
+    private val viewModel: MyTasksViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,37 +34,13 @@ class CreateTaskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mAuth = FirebaseAuth.getInstance()
-        binding.createTaskButton.setOnClickListener {
-            if (validateFields()) {
-                createTask(view)
-            }
-        }
+        addClickListeners()
+        addObservers(view)
     }
 
-    private fun createTask(view: View) {
-        binding.progressBar.visibility = View.VISIBLE
-
-        val title = binding.titleEditText.editText?.text.toString().trim()
-        val description = binding.descriptionEditText.editText?.text.toString().trim()
-        val price = binding.priceEditText.editText?.text.toString().trim().toDouble()
-        val secret = binding.secretDataEditText.editText?.text.toString().trim()
-
-        val task = Task(
-            title,
-            description,
-            price,
-            mAuth.currentUser?.uid,
-            Calendar.getInstance().time,
-            Status.TO_DO,
-            secret
-        )
-
-        val ref =
-            mAuth.currentUser?.let {
-                FirebaseFirestore.getInstance().collection("tasks").document()
-            }
-        ref?.set(task)?.addOnCompleteListener {
-            if (it.isSuccessful) {
+    private fun addObservers(view: View) {
+        viewModel.isCreateTaskSuccessful.observe(viewLifecycleOwner, { result ->
+            if (result) {
                 showToast(getString(R.string.create_task_success_text))
                 binding.progressBar.visibility = View.GONE
                 Navigation.findNavController(view).popBackStack()
@@ -71,7 +48,36 @@ class CreateTaskFragment : Fragment() {
                 showToast(getString(R.string.general_error))
                 binding.progressBar.visibility = View.GONE
             }
+        })
+    }
+
+    private fun addClickListeners() {
+        binding.createTaskButton.setOnClickListener {
+            if (validateFields()) {
+                createTask()
+            }
         }
+    }
+
+    private fun createTask() {
+        binding.progressBar.visibility = View.VISIBLE
+
+        val title = binding.titleEditText.editText?.text.toString().trim()
+        val description = binding.descriptionEditText.editText?.text.toString().trim()
+        val price = binding.priceEditText.editText?.text.toString().trim().toDouble()
+        val secret = binding.secretDataEditText.editText?.text.toString().trim()
+
+        viewModel.createTask(
+            Task(
+                title,
+                description,
+                price,
+                mAuth.currentUser?.uid,
+                Calendar.getInstance().time,
+                Status.TO_DO,
+                secret
+            )
+        )
     }
 
     private fun validateFields(): Boolean {

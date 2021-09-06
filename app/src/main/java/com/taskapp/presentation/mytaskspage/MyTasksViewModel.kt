@@ -16,6 +16,7 @@ import java.io.File
 
 class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
     private var storage: FirebaseStorage = FirebaseStorage.getInstance()
+    private var mFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     var myCreatedTasks: ArrayList<Task> = arrayListOf()
     var archivedMyCreatedTasks: ArrayList<Task> = arrayListOf()
@@ -39,17 +40,19 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
         MutableLiveData<Boolean>()
     }
 
+    val isCreateTaskSuccessful: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
     var taskOfferPageDataLs: ArrayList<TaskOfferPageData> = arrayListOf()
 
     fun getAllMyTasks(userId: String) {
-        val getMyCreatedTask = FirebaseFirestore
-            .getInstance()
+        val getMyCreatedTask = mFirestore
             .collection("tasks")
             .whereEqualTo("employer_id", userId)
             .get()
 
-        val getMyAssignedTask = FirebaseFirestore
-            .getInstance()
+        val getMyAssignedTask = mFirestore
             .collection("tasks")
             .whereEqualTo("employee_id", userId)
             .get()
@@ -100,8 +103,7 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun getTaskOffers(taskId: String) {
-        val getTaskOffers = FirebaseFirestore
-            .getInstance()
+        val getTaskOffers = mFirestore
             .collection("task_offers")
             .whereEqualTo("taskId", taskId)
             .get()
@@ -122,8 +124,7 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
     private fun getTaskOffers(offersList: ArrayList<String>) {
         val taskList: ArrayList<com.google.android.gms.tasks.Task<DocumentSnapshot>> = arrayListOf()
         for (userId in offersList) {
-            val taskGetUserTask = FirebaseFirestore
-                .getInstance()
+            val taskGetUserTask = mFirestore
                 .collection("users")
                 .document(userId)
                 .get()
@@ -172,8 +173,7 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
     private fun getAllUserRatings(usersList: ArrayList<String>) {
         val taskList: ArrayList<com.google.android.gms.tasks.Task<QuerySnapshot>> = arrayListOf()
         for (userId in usersList) {
-            val taskGetUserRatingTask = FirebaseFirestore
-                .getInstance()
+            val taskGetUserRatingTask = mFirestore
                 .collection("ratings")
                 .whereEqualTo("reviewee_id", userId)
                 .get()
@@ -212,7 +212,7 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
 
     fun acceptOffer(employeeId: String, taskId: String) {
         val setEmployeeTask =
-            FirebaseFirestore.getInstance().collection("tasks").document(taskId).update(
+            mFirestore.collection("tasks").document(taskId).update(
                 mapOf(
                     "employee_id" to employeeId,
                     "status" to Status.IN_PROGRESS
@@ -227,9 +227,8 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun deleteTask(taskId: String) {
-        val firebaseInstance = FirebaseFirestore.getInstance()
-        val batch = firebaseInstance.batch()
-        val deleteFromTasks = firebaseInstance.collection("tasks").document(taskId)
+        val batch = mFirestore.batch()
+        val deleteFromTasks = mFirestore.collection("tasks").document(taskId)
         deleteFromTasks.get().addOnSuccessListener { result ->
             batch.delete(result.reference).commit()
             deleteOffersForTask(taskId)
@@ -239,10 +238,9 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private fun deleteOffersForTask(taskId: String) {
-        val firebaseInstance = FirebaseFirestore.getInstance()
-        val batch = firebaseInstance.batch()
+        val batch = mFirestore.batch()
         val deleteFromOffers =
-            firebaseInstance.collection("task_offers")
+            mFirestore.collection("task_offers")
                 .whereEqualTo("taskId", taskId)
         deleteFromOffers.get().addOnSuccessListener { result ->
             result.documents.forEach {
@@ -252,6 +250,20 @@ class MyTasksViewModel(app: Application) : AndroidViewModel(app) {
             isDeleteTaskSuccessful.postValue(true)
         }.addOnFailureListener {
             isDeleteTaskSuccessful.postValue(true)
+        }
+    }
+
+    fun createTask(task: Task) {
+        val createTask = mFirestore
+            .collection("tasks")
+            .document()
+
+        createTask.set(task).addOnCompleteListener {
+            if (it.isSuccessful) {
+                isCreateTaskSuccessful.postValue(true)
+            } else {
+                isCreateTaskSuccessful.postValue(false)
+            }
         }
     }
 }

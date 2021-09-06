@@ -16,6 +16,7 @@ import kotlin.collections.ArrayList
 
 class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
     private var storage: FirebaseStorage = FirebaseStorage.getInstance()
+    private var mFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     val userLiveData: MutableLiveData<User> by lazy {
         MutableLiveData<User>()
@@ -67,14 +68,12 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
         val localFile: File = File.createTempFile("profile", "jpeg")
 
         val profilePicTask = storageRef.getFile(localFile)
-        val taskGetUserTask = FirebaseFirestore
-            .getInstance()
+        val taskGetUserTask = mFirestore
             .collection("users")
             .document(userId)
             .get()
 
-        val taskGetUserRating = FirebaseFirestore
-            .getInstance()
+        val taskGetUserRating = mFirestore
             .collection("ratings")
             .whereEqualTo("reviewee_id", userId)
             .get()
@@ -112,23 +111,21 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
     fun sendOffer(userId: String, taskId: String) {
         val taskOffer = TaskOffer(userId, taskId)
         val ref =
-            FirebaseFirestore.getInstance().collection("task_offers").document()
-        ref.set(taskOffer).addOnCompleteListener {
-            if (it.isSuccessful) {
-                sendOfferIsSuccessful.postValue(true)
-            } else {
-                sendOfferIsSuccessful.postValue(false)
-            }
+            mFirestore.collection("task_offers").document()
+        ref.set(taskOffer).addOnSuccessListener {
+            sendOfferIsSuccessful.postValue(true)
+        }.addOnFailureListener {
+            sendOfferIsSuccessful.postValue(false)
         }
     }
 
     fun withdrawOffer(userId: String, taskId: String) {
-        val firebaseInstance = FirebaseFirestore.getInstance()
-        val batch = firebaseInstance.batch()
-        val ref =
-            firebaseInstance.collection("task_offers")
-                .whereEqualTo("employeeId", userId)
-                .whereEqualTo("taskId", taskId)
+        val batch = mFirestore.batch()
+        val ref = mFirestore
+            .collection("task_offers")
+            .whereEqualTo("employeeId", userId)
+            .whereEqualTo("taskId", taskId)
+
         ref.get().addOnSuccessListener { result ->
             result.documents.forEach {
                 batch.delete(it.reference)
@@ -141,42 +138,41 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun checkIfOfferAlreadySent(userId: String, taskId: String) {
-        val ref =
-            FirebaseFirestore.getInstance().collection("task_offers")
-                .whereEqualTo("employeeId", userId)
-                .whereEqualTo("taskId", taskId)
-        ref.get()
-            .addOnSuccessListener {
-                if (it.isEmpty) {
-                    offerAlreadySent.postValue(false)
-                } else {
-                    offerAlreadySent.postValue(true)
-                }
-            }.addOnFailureListener {
+        val ref = mFirestore
+            .collection("task_offers")
+            .whereEqualTo("employeeId", userId)
+            .whereEqualTo("taskId", taskId)
+        ref.get().addOnSuccessListener {
+            if (it.isEmpty) {
                 offerAlreadySent.postValue(false)
+            } else {
+                offerAlreadySent.postValue(true)
             }
+        }.addOnFailureListener {
+            offerAlreadySent.postValue(false)
+        }
     }
 
     fun checkIfAlreadyReviewed(taskId: String, userId: String) {
-        val ref =
-            FirebaseFirestore.getInstance()
-                .collection("ratings")
-                .document(taskId + userId)
-        ref.get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    alreadyReviewed.postValue(true)
-                } else {
-                    alreadyReviewed.postValue(false)
-                }
-            }.addOnFailureListener {
+        val ref = mFirestore
+            .collection("ratings")
+            .document(taskId + userId)
+        ref.get().addOnSuccessListener { document ->
+            if (document.exists()) {
+                alreadyReviewed.postValue(true)
+            } else {
                 alreadyReviewed.postValue(false)
             }
+        }.addOnFailureListener {
+            alreadyReviewed.postValue(false)
+        }
     }
 
     fun sendFinished(taskId: String) {
-        val setEmployeeTask =
-            FirebaseFirestore.getInstance().collection("tasks").document(taskId).update(
+        val setEmployeeTask = mFirestore
+            .collection("tasks")
+            .document(taskId)
+            .update(
                 mapOf("status" to Status.DONE)
             )
         setEmployeeTask.addOnSuccessListener {
@@ -187,9 +183,10 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun sendReview(review: Review, taskId: String) {
-        val ref =
-            FirebaseFirestore.getInstance().collection("ratings")
-                .document(taskId + review.reviewee_id)
+        val ref = mFirestore
+            .collection("ratings")
+            .document(taskId + review.reviewee_id)
+
         ref.set(review).addOnCompleteListener {
             if (it.isSuccessful) {
                 isSendReviewSuccessful.postValue(true)
@@ -200,29 +197,26 @@ class SearchPageViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun searchTasks(excludeUserId: String) {
-        val ref =
-            FirebaseFirestore.getInstance()
-                .collection("tasks")
-                .whereNotEqualTo("employer_id", excludeUserId)
+        val ref = mFirestore
+            .collection("tasks")
+            .whereNotEqualTo("employer_id", excludeUserId)
 
-        ref.get()
-            .addOnSuccessListener { documents ->
-                searchTasksLs.clear()
-                documents.forEachIndexed { _, document ->
-                    val currTask = document.toObject() as Task
-                    if (currTask.status == Status.TO_DO) {
-                        currTask.id = document.id
-                        searchTasksLs.add(currTask)
-                    }
+        ref.get().addOnSuccessListener { documents ->
+            searchTasksLs.clear()
+            documents.forEachIndexed { _, document ->
+                val currTask = document.toObject() as Task
+                if (currTask.status == Status.TO_DO) {
+                    currTask.id = document.id
+                    searchTasksLs.add(currTask)
                 }
-                searchTasksLs.sortByDescending { it.creation_data }
-                filteredTasksLs.clear()
-                filteredTasksLs.addAll(searchTasksLs)
-                isSearchTasksSuccessful.postValue(true)
             }
-            .addOnFailureListener {
-                isSearchTasksSuccessful.postValue(false)
-            }
+            searchTasksLs.sortByDescending { it.creation_data }
+            filteredTasksLs.clear()
+            filteredTasksLs.addAll(searchTasksLs)
+            isSearchTasksSuccessful.postValue(true)
+        }.addOnFailureListener {
+            isSearchTasksSuccessful.postValue(false)
+        }
     }
 
     fun filterTasksByString(searchStr: String): Boolean {
