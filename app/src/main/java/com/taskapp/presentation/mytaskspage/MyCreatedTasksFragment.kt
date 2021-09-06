@@ -120,6 +120,7 @@ class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInter
         binding.descriptionTextView.text = arguments?.getString(TASK_DESC)
         binding.priceTextView.text = arguments?.getString(TASK_PRICE)
         binding.dateTextView.text = arguments?.getString(TASK_CREATION_DATA)
+        binding.secretDataTextView.text = arguments?.getString(TASK_SECRET_DATA)
     }
 
     private fun showToast(str: String) {
@@ -138,6 +139,7 @@ class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInter
         private const val TASK_PRICE = "TASK_PRICE"
         private const val TASK_STATUS = "TASK_STATUS"
         private const val TASK_CREATION_DATA = "TASK_CREATION_DATA"
+        private const val TASK_SECRET_DATA = "TASK_SECRET_DATA"
 
         fun newBundleInstance(
             taskId: String,
@@ -145,7 +147,8 @@ class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInter
             desc: String?,
             price: String,
             creation_data: String,
-            status: String
+            status: String,
+            secretData: String?,
         ): Bundle {
             val bundle = Bundle()
             bundle.putString(TASK_ID, taskId)
@@ -154,6 +157,7 @@ class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInter
             bundle.putString(TASK_PRICE, price)
             bundle.putString(TASK_CREATION_DATA, creation_data)
             bundle.putString(TASK_STATUS, status)
+            bundle.putString(TASK_SECRET_DATA, secretData)
             return bundle
         }
     }

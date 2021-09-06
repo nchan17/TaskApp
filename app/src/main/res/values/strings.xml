@@ -13,6 +13,7 @@
     <string name="empty_phone_number_error">Phone number is required</string>
     <string name="invalid_phone_number_error">Please provide valid phone</string>
     <string name="general_error">ERROR</string>
+    <string name="empty_field_error">You can\'t leave this field empty</string>
 
     <!--    Auth Flow-->
     <string name="task_app_banner_text">Taskit</string>
@@ -33,6 +34,8 @@
     <string name="create_task_title_edit_text_hint">Title</string>
     <string name="create_task_description_edit_text_hint">Description</string>
     <string name="create_task_price_edit_text_hint">Price</string>
+    <string name="create_task_secret_data_edit_text_hint">Confidential</string>
+    <string name="create_task_secret_data_edit_text_helper">This text will only appear to the tasker</string>
     <string name="create_task_action_button_text">Create Task</string>
     <string name="create_task_success_text">Task was created</string>
     <string name="my_tasks_in_progress">In Progress</string>
@@ -63,7 +66,6 @@
     <string name="language_button_text">Lan</string>
     <string name="general_yes_text">Yes</string>
     <string name="general_no_text">No</string>
-
 
 
 </resources>

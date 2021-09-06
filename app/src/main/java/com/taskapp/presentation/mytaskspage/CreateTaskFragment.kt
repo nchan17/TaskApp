@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.taskapp.R
 import com.taskapp.domain.Task
 import com.taskapp.databinding.FragmentCreateTaskBinding
+import com.taskapp.domain.Status
 import java.util.*
 
 class CreateTaskFragment : Fragment() {
@@ -31,10 +32,12 @@ class CreateTaskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.createTaskButton.setOnClickListener {
-            createTask(view)
-        }
         mAuth = FirebaseAuth.getInstance()
+        binding.createTaskButton.setOnClickListener {
+            if (validateFields()) {
+                createTask(view)
+            }
+        }
     }
 
     private fun createTask(view: View) {
@@ -43,6 +46,7 @@ class CreateTaskFragment : Fragment() {
         val title = binding.titleEditText.editText?.text.toString().trim()
         val description = binding.descriptionEditText.editText?.text.toString().trim()
         val price = binding.priceEditText.editText?.text.toString().trim().toDouble()
+        val secret = binding.secretDataEditText.editText?.text.toString().trim()
 
         val task = Task(
             title,
@@ -50,6 +54,8 @@ class CreateTaskFragment : Fragment() {
             price,
             mAuth.currentUser?.uid,
             Calendar.getInstance().time,
+            Status.TO_DO,
+            secret
         )
 
         val ref =
@@ -66,6 +72,25 @@ class CreateTaskFragment : Fragment() {
                 binding.progressBar.visibility = View.GONE
             }
         }
+    }
+
+    private fun validateFields(): Boolean {
+        if (binding.titleEditText.editText?.text.isNullOrEmpty()) {
+            binding.titleEditText.editText?.error = getString(R.string.empty_field_error)
+            binding.titleEditText.requestFocus()
+            return false
+        }
+        if (binding.descriptionEditText.editText?.text.isNullOrEmpty()) {
+            binding.descriptionEditText.editText?.error = getString(R.string.empty_field_error)
+            binding.descriptionEditText.requestFocus()
+            return false
+        }
+        if (binding.priceEditText.editText?.text.isNullOrEmpty()) {
+            binding.priceEditText.editText?.error = getString(R.string.empty_field_error)
+            binding.priceEditText.requestFocus()
+            return false
+        }
+        return true
     }
 
     private fun showToast(str: String) {

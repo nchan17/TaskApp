@@ -123,6 +123,7 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                     price,
                     date,
                     currTask.status.name,
+                    currTask.secret_data
                 )
                 view?.findNavController()
                     ?.navigate(R.id.action_myTasksFragment_to_taskPageFragment, bundle)
@@ -135,7 +136,8 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                         currTask.description,
                         price,
                         date,
-                        currTask.status.name
+                        currTask.status.name,
+                        currTask.secret_data
                     )
                     view?.findNavController()
                         ?.navigate(R.id.action_myTasksFragment_to_myCreatedTasksFragment, bundle)
@@ -148,7 +150,8 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                         currTask.description,
                         price,
                         date,
-                        currTask.status.name
+                        currTask.status.name,
+                        currTask.secret_data
                     )
                     view?.findNavController()
                         ?.navigate(R.id.action_myTasksFragment_to_taskPageFragment, bundle)
@@ -164,6 +167,7 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                     price,
                     date,
                     currTask.status.name,
+                    currTask.secret_data
                 )
                 view?.findNavController()
                     ?.navigate(R.id.action_myTasksFragment_to_taskPageFragment, bundle)
@@ -178,6 +182,7 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                     price,
                     date,
                     currTask.status.name,
+                    currTask.secret_data
                 )
                 view?.findNavController()
                     ?.navigate(R.id.action_myTasksFragment_to_taskPageFragment, bundle)

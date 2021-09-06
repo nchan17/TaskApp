@@ -106,7 +106,8 @@ class SearchPageFragment : Fragment(), SearchTaskRecyclerAdapter.SearchTaskClick
             tasks.description,
             PriceUtil.getPrice(tasks.price),
             DateTimeUtil.getDateToString(tasks.creation_data),
-            tasks.status.name
+            tasks.status.name,
+            null
         )
 
         view?.findNavController()

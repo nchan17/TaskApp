@@ -4,16 +4,17 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--    Errors-->
-    <string name="empty_email_error">Email is required</string>
-    <string name="invalid_email_error">Please provide valid email</string>
-    <string name="empty_password_error">Password is required</string>
-    <string name="short_password_error">Password should be at least 6 characters</string>
-    <string name="login_fail_error">Failed to log in</string>
-    <string name="something_wrong_error_text">Try again, something went wrong!</string>
-    <string name="empty_full_name_error">Full name is required</string>
-    <string name="empty_phone_number_error">Phone number is required</string>
-    <string name="invalid_phone_number_error">Please provide valid phone</string>
-    <string name="general_error">ERROR</string>
+    <string name="empty_email_error">იმეილის შეყვანა აუცილებელია</string>
+    <string name="invalid_email_error">გთხოვთ შეიყვანოთ ვალიდური იმეილი</string>
+    <string name="empty_password_error">პაროლის შეყვანა აუცილებელია</string>
+    <string name="short_password_error">პაროლი უნდა იყოს მინიმუმ 6 სიმბოლო</string>
+    <string name="login_fail_error">ეცდომა დალოგინებისას</string>
+    <string name="something_wrong_error_text">დაფიქსირგა შეცდომა, თავიდან სცადეთ!</string>
+    <string name="empty_full_name_error">სახელის შეყვანა აუცილებელია</string>
+    <string name="empty_phone_number_error">მობილურის შეყვანა აუცილებელია</string>
+    <string name="invalid_phone_number_error">გთხოვთ შეიყვანოთ ვალიდური მობილური</string>
+    <string name="general_error">შეცდომა</string>
+    <string name="empty_field_error">გთხოვთ შეავსოთ მოცემული ველი</string>
 
     <!--    Auth Flow-->
     <string name="task_app_banner_text">Taskit</string>
@@ -34,6 +35,8 @@
     <string name="create_task_title_edit_text_hint">სათაური</string>
     <string name="create_task_description_edit_text_hint">აღწერა</string>
     <string name="create_task_price_edit_text_hint">ფასი</string>
+    <string name="create_task_secret_data_edit_text_hint">კონფიდენციალური</string>
+    <string name="create_task_secret_data_edit_text_helper">ეს ტექსტი გამოუჩნდება მხოლოდ თასქის შემსრულებელს</string>
     <string name="create_task_action_button_text">თასქის შექმნა</string>
     <string name="create_task_success_text">თასქი შეიქმნა</string>
     <string name="my_tasks_in_progress">მიმდინარე</string>

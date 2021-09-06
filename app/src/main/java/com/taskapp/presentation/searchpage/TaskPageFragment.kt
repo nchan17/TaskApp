@@ -159,6 +159,7 @@ class TaskPageFragment : Fragment() {
         binding.descriptionTextView.text = arguments?.getString(TASK_DESC)
         binding.priceTextView.text = arguments?.getString(TASK_PRICE)
         binding.dateTextView.text = arguments?.getString(TASK_CREATION_DATA)
+        binding.secretDataTextView.text = arguments?.getString(TASK_SECRET_DATA)
     }
 
     private fun addObservers(view: View) {
@@ -254,6 +255,7 @@ class TaskPageFragment : Fragment() {
         private const val TASK_CREATION_DATA = "TASK_CREATION_DATA"
         private const val TASK_PAGE_FRAGMENT_TYPE = "TASK_PAGE_FRAGMENT_TYPE"
         private const val TASK_STATUS = "TASK_STATUS"
+        private const val TASK_SECRET_DATA = "TASK_SECRET_DATA"
 
         enum class TYPE {
             SEARCH_TO_DO,
@@ -271,7 +273,8 @@ class TaskPageFragment : Fragment() {
             desc: String?,
             price: String,
             creation_data: String,
-            status: String
+            status: String,
+            secretData: String?,
         ): Bundle {
             val bundle = Bundle()
             bundle.putString(TASK_PAGE_FRAGMENT_TYPE, fragmentType)
@@ -282,6 +285,7 @@ class TaskPageFragment : Fragment() {
             bundle.putString(TASK_PRICE, price)
             bundle.putString(TASK_CREATION_DATA, creation_data)
             bundle.putString(TASK_STATUS, status)
+            bundle.putString(TASK_SECRET_DATA, secretData)
             return bundle
         }
     }
