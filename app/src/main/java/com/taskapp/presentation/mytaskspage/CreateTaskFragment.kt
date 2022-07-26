@@ -1,35 +1,25 @@
 package com.taskapp.presentation.mytaskspage
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
+import com.taskapp.common.viewBinding
 import com.taskapp.R
-import com.taskapp.domain.Task
 import com.taskapp.databinding.FragmentCreateTaskBinding
 import com.taskapp.domain.Status
+import com.taskapp.domain.Task
 import java.util.*
 
-class CreateTaskFragment : Fragment() {
-    private var _binding: FragmentCreateTaskBinding? = null
-    private val binding get() = _binding!!
+class CreateTaskFragment : Fragment(R.layout.fragment_create_task) {
+
+    private val binding by viewBinding(FragmentCreateTaskBinding::bind)
 
     private lateinit var mAuth: FirebaseAuth
     private val viewModel: MyTasksViewModel by viewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentCreateTaskBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,7 +29,7 @@ class CreateTaskFragment : Fragment() {
     }
 
     private fun addObservers(view: View) {
-        viewModel.isCreateTaskSuccessful.observe(viewLifecycleOwner, { result ->
+        viewModel.isCreateTaskSuccessful.observe(viewLifecycleOwner) { result ->
             if (result) {
                 showToast(getString(R.string.create_task_success_text))
                 binding.progressBar.visibility = View.GONE
@@ -48,7 +38,7 @@ class CreateTaskFragment : Fragment() {
                 showToast(getString(R.string.general_error))
                 binding.progressBar.visibility = View.GONE
             }
-        })
+        }
     }
 
     private fun addClickListeners() {
@@ -101,10 +91,5 @@ class CreateTaskFragment : Fragment() {
 
     private fun showToast(str: String) {
         Toast.makeText(context, str, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

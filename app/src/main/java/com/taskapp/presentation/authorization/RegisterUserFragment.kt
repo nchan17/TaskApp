@@ -1,36 +1,25 @@
 package com.taskapp.presentation.authorization
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import com.taskapp.R
-import com.taskapp.domain.User
 import com.google.firebase.auth.FirebaseAuth
+import com.taskapp.common.viewBinding
+import com.taskapp.R
 import com.taskapp.databinding.FragmentRegisterUserBinding
+import com.taskapp.domain.User
 
+class RegisterUserFragment : Fragment(R.layout.fragment_register_user), View.OnClickListener {
 
-class RegisterUserFragment : Fragment(), View.OnClickListener {
-    private var _binding: FragmentRegisterUserBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewBinding(FragmentRegisterUserBinding::bind)
 
     private val viewModel: AuthorisationViewModel by viewModels()
     private lateinit var mAuth: FirebaseAuth
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentRegisterUserBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,7 +31,7 @@ class RegisterUserFragment : Fragment(), View.OnClickListener {
     }
 
     private fun addObservers() {
-        viewModel.isCreateUserSuccessful.observe(viewLifecycleOwner, { result ->
+        viewModel.isCreateUserSuccessful.observe(viewLifecycleOwner) { result ->
             if (result) {
                 showToast(getString(R.string.user_was_created_text))
                 binding.progressBar.visibility = GONE
@@ -51,7 +40,7 @@ class RegisterUserFragment : Fragment(), View.OnClickListener {
                 showToast(getString(R.string.general_error))
                 binding.progressBar.visibility = GONE
             }
-        })
+        }
     }
 
     override fun onClick(v: View?) {
@@ -109,10 +98,5 @@ class RegisterUserFragment : Fragment(), View.OnClickListener {
 
     private fun showToast(str: String) {
         Toast.makeText(context, str, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

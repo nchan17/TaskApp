@@ -1,35 +1,24 @@
 package com.taskapp.presentation.authorization
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import androidx.fragment.app.Fragment
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.taskapp.databinding.FragmentLoginBinding
 import com.taskapp.R
+import com.taskapp.common.viewBinding
+import com.taskapp.databinding.FragmentLoginBinding
 import java.util.*
 
+class LoginFragment : Fragment(R.layout.fragment_login), View.OnClickListener {
 
-class LoginFragment : Fragment(), View.OnClickListener {
-    private var _binding: FragmentLoginBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewBinding(FragmentLoginBinding::bind)
 
     private val viewModel: AuthorisationViewModel by viewModels()
     private lateinit var mAuth: FirebaseAuth
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -112,11 +101,4 @@ class LoginFragment : Fragment(), View.OnClickListener {
     private fun showToast(str: String) {
         Toast.makeText(context, str, Toast.LENGTH_LONG).show()
     }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
 }

@@ -67,5 +67,8 @@
     <string name="general_yes_text">დიახ</string>
     <string name="general_no_text">არა</string>
 
+    <string name="label_menu_search">ძებნა</string>
+    <string name="label_menu_tasks">თასქები</string>
+    <string name="label_menu_profile">პროფილი</string>
 
 </resources>

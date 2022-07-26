@@ -2,16 +2,15 @@ package com.taskapp.presentation.mytaskspage
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.taskapp.common.viewBinding
 import com.taskapp.R
 import com.taskapp.databinding.FragmentMyTasksBinding
 import com.taskapp.domain.Status
@@ -19,12 +18,10 @@ import com.taskapp.domain.Task
 import com.taskapp.presentation.searchpage.TaskPageFragment
 import com.taskapp.utils.DateTimeUtil
 import com.taskapp.utils.PriceUtil
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
-class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface {
-    private var _binding: FragmentMyTasksBinding? = null
-    private val binding get() = _binding!!
+class MyTasksFragment : Fragment(R.layout.fragment_my_tasks), MyTasksRecyclerAdapter.MyTasksClickInterface {
+
+    private val binding by viewBinding(FragmentMyTasksBinding::bind)
 
     private var listChild = HashMap<String, ArrayList<Task>>()
     private var listGroup = arrayListOf<String>()
@@ -34,15 +31,6 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
 
     private lateinit var adapter: MyTasksRecyclerAdapter
     private lateinit var listener: MyTasksRecyclerAdapter.MyTasksClickInterface
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMyTasksBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -71,7 +59,7 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
     }
 
     private fun addObservers() {
-        viewModel.isGetAllTasksSuccessful.observe(viewLifecycleOwner, { result ->
+        viewModel.isGetAllTasksSuccessful.observe(viewLifecycleOwner) { result ->
             if (result) {
                 listChild[listGroup[0]] = viewModel.inProgressAssignedTasks
                 listChild[listGroup[1]] = viewModel.myCreatedTasks
@@ -85,12 +73,7 @@ class MyTasksFragment : Fragment(), MyTasksRecyclerAdapter.MyTasksClickInterface
                 binding.myTasksExpandable.expandGroup(3)
                 binding.progressBar.visibility = GONE
             }
-        })
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        }
     }
 
     override fun onItemClick(groupPosition: Int, childPosition: Int) {

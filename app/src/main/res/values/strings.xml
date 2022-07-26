@@ -67,5 +67,8 @@
     <string name="general_yes_text">Yes</string>
     <string name="general_no_text">No</string>
 
+    <string name="label_menu_search">Search</string>
+    <string name="label_menu_tasks">Tasks</string>
+    <string name="label_menu_profile">Profile</string>
 
 </resources>

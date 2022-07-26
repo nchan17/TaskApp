@@ -3,31 +3,30 @@ package com.taskapp.presentation.searchpage
 import android.app.AlertDialog
 import android.os.Bundle
 import android.text.InputType
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import com.google.firebase.auth.FirebaseAuth
-import com.taskapp.R
-import com.taskapp.domain.User
-import com.taskapp.databinding.FragmentTaskPageBinding
-import android.widget.LinearLayout
 import androidx.navigation.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.taskapp.common.viewBinding
+import com.taskapp.R
+import com.taskapp.databinding.FragmentTaskPageBinding
 import com.taskapp.domain.Review
+import com.taskapp.domain.User
 import com.taskapp.presentation.userpage.UserPageFragment
 import java.util.*
 
 
-class TaskPageFragment : Fragment() {
-    private var _binding: FragmentTaskPageBinding? = null
-    private val binding get() = _binding!!
+class TaskPageFragment : Fragment(R.layout.fragment_task_page) {
+
+    private val binding by viewBinding(FragmentTaskPageBinding::bind)
 
     private val viewModel: SearchPageViewModel by viewModels()
     private lateinit var mAuth: FirebaseAuth
@@ -35,15 +34,6 @@ class TaskPageFragment : Fragment() {
     private lateinit var fragmentType: String
     private lateinit var status: String
     private lateinit var userId: String
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentTaskPageBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -163,7 +153,7 @@ class TaskPageFragment : Fragment() {
     }
 
     private fun addObservers(view: View) {
-        viewModel.getUserDataIsSuccessful.observe(viewLifecycleOwner, { result ->
+        viewModel.getUserDataIsSuccessful.observe(viewLifecycleOwner) { result ->
             if (result) {
                 viewModel.profilePicLiveData.value?.let {
                     binding.profilePictureImageView.setImageBitmap(it)
@@ -179,57 +169,57 @@ class TaskPageFragment : Fragment() {
                 showToast(getString(R.string.general_error))
             }
             binding.progressBar.visibility = GONE
-        })
+        }
 
-        viewModel.sendOfferIsSuccessful.observe(viewLifecycleOwner, { result ->
+        viewModel.sendOfferIsSuccessful.observe(viewLifecycleOwner) { result ->
             if (result) {
                 showToast("Offer was sent")
                 Navigation.findNavController(view).popBackStack()
             } else {
                 showToast(getString(R.string.general_error))
             }
-        })
+        }
 
-        viewModel.withdrawOfferIsSuccessful.observe(viewLifecycleOwner, { result ->
+        viewModel.withdrawOfferIsSuccessful.observe(viewLifecycleOwner) { result ->
             if (result) {
                 showToast("Offer was withdrawn")
                 Navigation.findNavController(view).popBackStack()
             } else {
                 showToast(getString(R.string.general_error))
             }
-        })
+        }
 
-        viewModel.offerAlreadySent.observe(viewLifecycleOwner, { result ->
+        viewModel.offerAlreadySent.observe(viewLifecycleOwner) { result ->
             if (!result) {
                 binding.offerButton.visibility = VISIBLE
             } else {
                 binding.withdrawOfferButton.visibility = VISIBLE
             }
-        })
+        }
 
-        viewModel.isFinishTaskSuccessful.observe(viewLifecycleOwner, { result ->
+        viewModel.isFinishTaskSuccessful.observe(viewLifecycleOwner) { result ->
             if (result) {
                 showToast("Congrats! Task is DONE!")
                 Navigation.findNavController(view).popBackStack()
             } else {
                 showToast(getString(R.string.general_error))
             }
-        })
+        }
 
-        viewModel.alreadyReviewed.observe(viewLifecycleOwner, { result ->
+        viewModel.alreadyReviewed.observe(viewLifecycleOwner) { result ->
             if (!result) {
                 binding.reviewButton.visibility = VISIBLE
             }
-        })
+        }
 
-        viewModel.isSendReviewSuccessful.observe(viewLifecycleOwner, { result ->
+        viewModel.isSendReviewSuccessful.observe(viewLifecycleOwner) { result ->
             if (result) {
                 showToast("Your review was sent!")
                 binding.reviewButton.visibility = GONE
             } else {
                 showToast(getString(R.string.general_error))
             }
-        })
+        }
     }
 
 
@@ -239,11 +229,6 @@ class TaskPageFragment : Fragment() {
 
     private fun showToast(str: String) {
         Toast.makeText(context, str, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     companion object {
@@ -289,5 +274,4 @@ class TaskPageFragment : Fragment() {
             return bundle
         }
     }
-
 }

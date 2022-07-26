@@ -2,31 +2,28 @@ package com.taskapp.presentation.userpage
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.provider.MediaStore
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import com.google.firebase.auth.FirebaseAuth
-import com.taskapp.domain.User
-import com.taskapp.databinding.FragmentUserPageBinding
-import android.content.Intent
-import android.content.res.Configuration
-import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.taskapp.common.viewBinding
 import com.taskapp.R
+import com.taskapp.databinding.FragmentUserPageBinding
+import com.taskapp.domain.User
 import java.util.*
 
+class UserPageFragment : Fragment(R.layout.fragment_user_page), UserPageReviewsAdapter.ReviewTaskClickInterface {
 
-class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInterface {
-    private var _binding: FragmentUserPageBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewBinding(FragmentUserPageBinding::bind)
 
     private lateinit var userId: String
     private lateinit var mAuth: FirebaseAuth
@@ -34,15 +31,6 @@ class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInter
 
     private lateinit var adapter: UserPageReviewsAdapter
     private lateinit var listener: UserPageReviewsAdapter.ReviewTaskClickInterface
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentUserPageBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -122,7 +110,7 @@ class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInter
     }
 
     private fun addObservers() {
-        viewModel.getUserDataDone.observe(viewLifecycleOwner, { result ->
+        viewModel.getUserDataDone.observe(viewLifecycleOwner) { result ->
             if (result) {
                 viewModel.profilePicLiveData.value?.let {
                     binding.profilePictureImageView.setImageBitmap(
@@ -139,9 +127,9 @@ class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInter
                 showToast("error getting user data")
             }
             binding.progressBar.visibility = GONE
-        })
+        }
 
-        viewModel.setProfilePicDone.observe(viewLifecycleOwner, { result ->
+        viewModel.setProfilePicDone.observe(viewLifecycleOwner) { result ->
             if (result) {
                 showToast("Data was sent")
                 binding.progressBar.visibility = GONE
@@ -149,9 +137,9 @@ class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInter
                 showToast(getString(R.string.general_error))
                 binding.progressBar.visibility = GONE
             }
-        })
+        }
 
-        viewModel.isGetReviewsSuccessful.observe(viewLifecycleOwner, { result ->
+        viewModel.isGetReviewsSuccessful.observe(viewLifecycleOwner) { result ->
             if (result) {
                 adapter = UserPageReviewsAdapter(viewModel.reviewPageDataLs, listener)
                 binding.recyclerView.adapter = adapter
@@ -160,7 +148,7 @@ class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInter
                 showToast(getString(R.string.general_error))
                 binding.recyclerProgressBar.visibility = GONE
             }
-        })
+        }
     }
 
 
@@ -188,11 +176,6 @@ class UserPageFragment : Fragment(), UserPageReviewsAdapter.ReviewTaskClickInter
 
     private fun showToast(str: String) {
         Toast.makeText(context, str, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun onUserClick(index: Int) {

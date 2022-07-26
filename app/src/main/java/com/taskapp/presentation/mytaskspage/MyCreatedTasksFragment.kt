@@ -3,9 +3,7 @@ package com.taskapp.presentation.mytaskspage
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,14 +11,15 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.taskapp.common.viewBinding
 import com.taskapp.R
 import com.taskapp.databinding.FragmentMyCreatedTasksBinding
 import com.taskapp.domain.Status
 import com.taskapp.presentation.userpage.UserPageFragment
 
-class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInterface {
-    private var _binding: FragmentMyCreatedTasksBinding? = null
-    private val binding get() = _binding!!
+class MyCreatedTasksFragment : Fragment(R.layout.fragment_my_created_tasks), TaskOffersAdapter.TaskOfferClickInterface {
+
+    private val binding by viewBinding(FragmentMyCreatedTasksBinding::bind)
 
     private val viewModel: MyTasksViewModel by viewModels()
     private lateinit var mAuth: FirebaseAuth
@@ -28,15 +27,6 @@ class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInter
 
     private lateinit var adapter: TaskOffersAdapter
     private lateinit var listener: TaskOffersAdapter.TaskOfferClickInterface
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMyCreatedTasksBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -84,7 +74,7 @@ class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInter
     }
 
     private fun setupObservers(view: View) {
-        viewModel.isGetOffersUserDataSuccessful.observe(viewLifecycleOwner, { result ->
+        viewModel.isGetOffersUserDataSuccessful.observe(viewLifecycleOwner) { result ->
             if (result) {
                 adapter =
                     TaskOffersAdapter(viewModel.taskOfferPageDataLs, listener)
@@ -94,25 +84,25 @@ class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInter
                 showToast(getString(R.string.general_error))
                 binding.progressBar.visibility = View.GONE
             }
-        })
+        }
 
-        viewModel.isAcceptOfferSuccessful.observe(viewLifecycleOwner, { result ->
+        viewModel.isAcceptOfferSuccessful.observe(viewLifecycleOwner) { result ->
             if (result) {
                 showToast("Offer was accepted!")
                 Navigation.findNavController(view).popBackStack()
             } else {
                 showToast(getString(R.string.general_error))
             }
-        })
+        }
 
-        viewModel.isDeleteTaskSuccessful.observe(viewLifecycleOwner, { result ->
+        viewModel.isDeleteTaskSuccessful.observe(viewLifecycleOwner) { result ->
             if (result) {
                 showToast("Task successfully deleted!")
                 Navigation.findNavController(view).popBackStack()
             } else {
                 showToast(getString(R.string.general_error))
             }
-        })
+        }
     }
 
     private fun setUpViews() {
@@ -125,11 +115,6 @@ class MyCreatedTasksFragment : Fragment(), TaskOffersAdapter.TaskOfferClickInter
 
     private fun showToast(str: String) {
         Toast.makeText(context, str, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     companion object {
